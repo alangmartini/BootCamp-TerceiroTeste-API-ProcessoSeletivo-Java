@@ -81,6 +81,33 @@ class UnitSegundoTests {
     }
 
 
+    @Nested
+    class testAprovarCandidato {
+        @Test
+        public void successfullyMovesCandidate() throws CandidatoDuplicado, NomeInvalido, CandidatoNaoEncontrado {
+            Segundo segundo = new Segundo();
+            int codCandidato = segundo.iniciarProcesso("John");
+
+            Candidato candidato = segundo.encontrarCandidateEmFases(codCandidato);
+            assertEquals(candidato.getFaseAtual(), "Recebidos");
+
+            segundo.marcarEntrevista(codCandidato);
+            Candidato candidatoEntrevista = segundo.encontrarCandidateEmFases(codCandidato);
+            assertEquals(candidatoEntrevista.getFaseAtual(), "Qualificados");
+
+            segundo.aprovarCandidato(codCandidato);
+            Candidato candidatoAprovado = segundo.encontrarCandidateEmFases(codCandidato);
+            assertEquals(candidatoAprovado.getFaseAtual(), "Aprovados");
+        }
+
+        @Test
+        public void throwsErrorOnNonExistentCandidate() {
+            Segundo segundo = new Segundo();
+            assertThrows(CandidatoNaoEncontrado.class, () -> segundo.aprovarCandidato(999));
+        }
+    }
+
+
 //    @Test
 //    public void testMarcarEntrevista() throws CandidatoNaoEncontrado, CandidatoDuplicado {
 //        Segundo segundo = new Segundo();
