@@ -12,7 +12,6 @@ public class E2EProcessManager {
 
     @Test
     public void fullProcess() throws Exception {
-        // Creating an instance of Segundo
         Segundo segundo = new Segundo();
 
         int johnId = segundo.iniciarProcesso("John");
