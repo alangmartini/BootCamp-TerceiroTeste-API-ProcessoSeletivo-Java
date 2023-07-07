@@ -3,12 +3,14 @@ package segundoteste;
 import segundoteste.candidatos.Candidato;
 import segundoteste.errors.CandidatoDuplicado;
 import segundoteste.errors.CandidatoNaoEncontrado;
+import segundoteste.errors.NomeInvalido;
 import segundoteste.fases.*;
+import segundoteste.validators.nameValidator.Validator;
+import segundoteste.validators.nameValidator.ValidatorCaracteres;
+import segundoteste.validators.nameValidator.ValidatorNaoVazio;
+import segundoteste.validators.nameValidator.ValidatorTamanho;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.concurrent.atomic.AtomicReference;
 
 // Chamado de Segundo para seguir os requerimentos do teste
 public class Segundo implements IProcessManager {
@@ -29,7 +31,15 @@ public class Segundo implements IProcessManager {
 
 
     }
-    public synchronized int iniciarProcesso(String nome) throws CandidatoDuplicado {
+    public synchronized int iniciarProcesso(String nome) throws CandidatoDuplicado, NomeInvalido {
+        // Validatores de nome
+        Validator validator = new ValidatorNaoVazio();
+        Validator validatorChar = new ValidatorCaracteres();
+        Validator validatorTam = new ValidatorTamanho();
+
+        validator.setNext(validatorChar);
+        validatorChar.setNext(validatorTam);
+
         int codCandidato = Segundo.CandidatosTotais + 1;
         Segundo.CandidatosTotais += 1;
 
