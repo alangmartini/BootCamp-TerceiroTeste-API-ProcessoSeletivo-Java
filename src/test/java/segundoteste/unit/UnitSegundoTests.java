@@ -1,11 +1,14 @@
 package segundoteste.unit;
 
+import org.junit.jupiter.api.Nested;
 import segundoteste.Segundo;
 import segundoteste.candidatos.Candidato;
 import segundoteste.errors.CandidatoDuplicado;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import segundoteste.errors.CandidatoNaoEncontrado;
+import segundoteste.errors.NomeInvalido;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -14,21 +17,55 @@ class UnitSegundoTests {
     void contextLoads() {
     }
 
-    @Test
-    public void testIniciarProcesso() throws CandidatoDuplicado {
-        Segundo segundo = new Segundo();
-        int codCandidato = segundo.iniciarProcesso("John");
-        assertNotNull(codCandidato);
-        assertThrows(CandidatoDuplicado.class, () -> segundo.iniciarProcesso("John"));
+    @Nested
+    class testIniciarProcesso {
+        @Test
+        public void succesfullyCreates() {
+            Segundo segundo = new Segundo();
+            int codCandidato = segundo.iniciarProcesso("John");
 
-        Candidato candidato = segundo.encontrarCandidateEmFases(codCandidato);
-        assertEquals(candidato.getFaseAtual(), "Recebidos");
+            Candidato candidato = segundo.encontrarCandidateEmFases(codCandidato);
+            assertEquals(candidato.getFaseAtual(), "Recebidos");
+        }
+
+        @Test
+        public void throwsErrorOnRepeatedCandidate() throws CandidatoDuplicado {
+            Segundo segundo = new Segundo();
+            int codCandidato = segundo.iniciarProcesso("John");
+
+            assertNotNull(codCandidato);
+            assertThrows(CandidatoDuplicado.class, () -> segundo.iniciarProcesso("John"));
+        }
+
+        @Test
+        public void throwsErrorOnEmptyCandidateName() {
+            Segundo segundo = new Segundo();
+            assertThrows(NomeInvalido.class, () -> segundo.iniciarProcesso(""));
+        }
+
+        @Test
+        public void throwsErrorOnCandidateNameWithInvalidCharacters() {
+            Segundo segundo = new Segundo();
+            assertThrows(NomeInvalido.class, () -> segundo.iniciarProcesso("John@123"));
+        }
+
+        @Test
+        public void throwsErrorOnCandidateNameExceedingMaxLength() {
+            Segundo segundo = new Segundo();
+            assertThrows(NomeInvalido.class, () -> segundo.iniciarProcesso(
+                    "JohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohnJohn"
+            ));
+        }
     }
-//
+
 //    @Test
 //    public void testMarcarEntrevista() throws CandidatoNaoEncontrado, CandidatoDuplicado {
+//        Segundo segundo = new Segundo();
+//
 //        int codCandidato = segundo.iniciarProcesso("John");
+//
 //        segundo.marcarEntrevista(codCandidato);
+//
 //        assertEquals("Qualificados", segundo.verificarStatusCandidato(codCandidato));
 //        assertThrows(CandidatoNaoEncontrado.class, () -> segundo.marcarEntrevista(999));
 //    }
