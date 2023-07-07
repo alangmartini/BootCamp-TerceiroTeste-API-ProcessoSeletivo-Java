@@ -26,10 +26,10 @@ public class E2EProcessManager {
         segundo.desqualificarCandidato(jackId);
 
         String johnStatus = segundo.verificarStatusCandidato(johnId);
-        assertEquals(johnStatus, "Aprovados");
+        assertEquals(johnStatus, "Aprovado");
 
         String janeStatus = segundo.verificarStatusCandidato(janeId);
-        assertEquals(janeStatus, "Qualificados");
+        assertEquals(janeStatus, "Qualificado");
 
         assertThrows(CandidatoNaoEncontrado.class, () -> segundo.verificarStatusCandidato(jackId));
 

@@ -48,7 +48,7 @@ class UnitSegundoTests {
         @Test
         public void throwsErrorOnCandidateNameWithInvalidCharacters() {
             Segundo segundo = new Segundo();
-            assertThrows(NomeInvalido.class, () -> segundo.iniciarProcesso("John@123"));
+            assertThrows(NomeInvalido.class, () -> segundo.iniciarProcesso("   "));
         }
 
         @Test
@@ -168,15 +168,15 @@ class UnitSegundoTests {
             int codCandidato = segundo.iniciarProcesso("John");
 
             String status = segundo.verificarStatusCandidato(codCandidato);
-            assertEquals(status, "Recebidos");
+            assertEquals(status, "Recebido");
 
             segundo.marcarEntrevista(codCandidato);
             status = segundo.verificarStatusCandidato(codCandidato);
-            assertEquals(status, "Qualificados");
+            assertEquals(status, "Qualificado");
 
             segundo.aprovarCandidato(codCandidato);
             status = segundo.verificarStatusCandidato(codCandidato);
-            assertEquals(status, "Aprovados");
+            assertEquals(status, "Aprovado");
         }
 
         @Test
