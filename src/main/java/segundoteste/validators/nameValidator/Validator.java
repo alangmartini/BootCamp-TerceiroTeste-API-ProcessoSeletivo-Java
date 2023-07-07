@@ -1,8 +1,8 @@
 package segundoteste.validators.nameValidator;
 
-import segundoteste.errors.NomeIncorreto;
+import segundoteste.errors.NomeInvalido;
 
 public interface Validator {
-    void setNext();
-    void validate(String nome) throws NomeIncorreto;
+    void setNext(Validator next);
+    void validate(String nome) throws NomeInvalido;
 }

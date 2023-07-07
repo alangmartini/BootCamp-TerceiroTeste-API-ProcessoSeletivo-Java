@@ -1,17 +1,17 @@
 package segundoteste.validators.nameValidator;
 
-import segundoteste.errors.NomeIncorreto;
+import segundoteste.errors.NomeInvalido;
 
-public class ValidatorTamanho {
+public class ValidatorTamanho implements Validator{
     private Validator next;
 
-    private void setNext(Validator next) {
+    public void setNext(Validator next) {
         this.next = next;
     }
 
-    private void validate(String nome) throws NomeIncorreto {
+    public void validate(String nome) throws NomeInvalido {
         if (nome.length() < 1 || nome.length() > 50) {
-            throw new NomeIncorreto();
+            throw new NomeInvalido();
         }
 
         if (this.next != null) {

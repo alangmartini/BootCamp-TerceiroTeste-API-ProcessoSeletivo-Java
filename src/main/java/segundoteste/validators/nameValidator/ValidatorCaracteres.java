@@ -1,17 +1,17 @@
 package segundoteste.validators.nameValidator;
 
-import segundoteste.errors.NomeIncorreto;
+import segundoteste.errors.NomeInvalido;
 
-public class ValidatorCaracteres {
+public class ValidatorCaracteres implements Validator {
     private Validator next;
 
-    private void setNext(Validator next) {
+    public void setNext(Validator next) {
         this.next = next;
     }
 
-    private void validate(String nome) throws NomeIncorreto {
+    public void validate(String nome) throws NomeInvalido {
         if (!nome.matches("[a-zA-Z'-]+")) {
-            throw new NomeIncorreto();
+            throw new NomeInvalido();
         }
 
         if (this.next != null) {
