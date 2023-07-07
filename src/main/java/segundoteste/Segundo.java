@@ -13,13 +13,24 @@ import segundoteste.validators.nameValidator.ValidatorTamanho;
 import java.util.List;
 
 // Chamado de Segundo para seguir os requerimentos do teste
+
+/**
+ * A class named 'Segundo' for managing a multi-phase candidate process. It implements the IProcessManager interface.
+ * It provides methods for initiating a process for a candidate, scheduling an interview, approving a candidate,
+ * disqualifying a candidate, checking a candidate's status, and obtaining a list of approved candidates.
+ *
+ * TODO: Instead of using the total number of candidates to generate the ID, a random and/or hashed way should be created.
+ */
 public class Segundo implements IProcessManager {
-    // TODO: Ao invés de utilizar a quantidade de cadidatos para gerar o ID, criar um maneira randômica e/ou hasheada.
     static int CandidatosTotais = 0;
     AbsFase recebidos;
     AbsFase qualificados;
     AbsFase aprovados;
 
+
+    /**
+     * Construtor, inicializa os tres estágios do process: Recebidos, Qualificados, Aprovados.
+     */
     public Segundo() {
         try {
             this.recebidos = new Recebidos();
@@ -31,6 +42,14 @@ public class Segundo implements IProcessManager {
 
 
     }
+
+    /**
+     * Inicia o processo para um candidato. Realiza uma validação de nome.
+     * @param nome O nome do candidato
+     * @return Código do candidato criado.
+     * @throws CandidatoDuplicado se um candidato com o mesmo nome já existe.
+     * @throws NomeInvalido se o nome for inválido.
+     */
     public synchronized int iniciarProcesso(String nome) throws CandidatoDuplicado, NomeInvalido {
         // Validatores de nome
         Validator validator = new ValidatorNaoVazio();
@@ -49,6 +68,12 @@ public class Segundo implements IProcessManager {
 
         return codCandidato;
     }
+
+    /**
+     * Marca uma entrevista com o candidato.
+     * @param codCandidato O código do candidato.
+     * @throws CandidatoNaoEncontrado se nenhum candidato com o codCandidato foi encontrado.
+     */
     public void marcarEntrevista(int codCandidato) throws CandidatoNaoEncontrado {
         Candidato candidatoAEntrevistar = this
                 .recebidos.removeCandidato(codCandidato);
@@ -56,6 +81,10 @@ public class Segundo implements IProcessManager {
         this.qualificados.addCandidato(candidatoAEntrevistar);
     }
 
+    /**
+     * Aprova um candidato.
+     * @param codCandidato O código do candidato.
+     */
     public void aprovarCandidato(int codCandidato) {
         Candidato candidatoAprovado = this
                 .qualificados.removeCandidato(codCandidato);
@@ -63,6 +92,11 @@ public class Segundo implements IProcessManager {
         this.aprovados.addCandidato(candidatoAprovado);
     }
 
+    /**
+     * Desqualifica um candidato.
+     * @param codCandidato O código do candidato.
+     * @throws CandidatoNaoEncontrado se nenhum candidato com o codCandidato foi encontrado.
+     */
     public void desqualificarCandidato(int codCandidato) throws CandidatoNaoEncontrado {
         Candidato candidatoADesqualificar = encontrarCandidateEmFases(codCandidato);
 
@@ -73,6 +107,12 @@ public class Segundo implements IProcessManager {
         faseDoCandidato.removeCandidato(codCandidato);
     }
 
+    /**
+     * Encontra um candidato através das diferentes fases.
+     * @param codCandidato O código do candidato.
+     * @return O candidato, caso seja encontrado, ou throw uma exceção.
+     * @throws CandidatoNaoEncontrado se nenhum candidato com o codCandidato foi encontrado.
+     */
     public Candidato encontrarCandidateEmFases(int codCandidato) {
         Candidato candidatoEncontrado = null;
 
@@ -92,12 +132,22 @@ public class Segundo implements IProcessManager {
         return candidatoEncontrado;
     }
 
+    /**
+     * Verifica a faseAtual de um candidato.
+     * @param codCandidato O código do candidato.
+     * @return A fase atual do candidato como String.
+     * @throws CandidatoNaoEncontrado se nenhum candidato com o codCandidato foi encontrado.
+     */
     public String verificarStatusCandidato(int codCandidato) throws CandidatoNaoEncontrado {
         Candidato candidato = encontrarCandidateEmFases(codCandidato);
 
         return candidato.getFaseAtual();
     }
 
+    /**
+     * Obtém uma lista de candidatos aprovados
+     * @return Uma lista de Strings com nome dos aprovados.
+     */
     public List<String> obterAprovados() {
         List<Candidato> cadidatosAprovados = this.aprovados.getCandidatos();
 
