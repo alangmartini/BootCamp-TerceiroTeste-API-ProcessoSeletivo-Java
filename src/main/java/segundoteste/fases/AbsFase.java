@@ -16,7 +16,7 @@ public abstract  class AbsFase implements IFase{
      * FaseFactory é o responsável por manter apenas uma única instancia de cada implementação de AbsFase.
      */
     protected AbsFase() {
-        fasesInstanciadas.put(this.getClass().getName(), this);
+        fasesInstanciadas.put(this.getClass().getSimpleName(), this);
     }
 
     @Override
