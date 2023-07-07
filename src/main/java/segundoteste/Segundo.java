@@ -64,6 +64,14 @@ public class Segundo implements IProcessManager {
         Segundo.CandidatosTotais += 1;
 
         Candidato novoCandidato = new Candidato(nome, codCandidato);
+
+
+        Candidato possivelCandidato = this.encontrarCandidatoPorNome(nome);
+
+        if (possivelCandidato != null) {
+            throw new CandidatoDuplicado();
+        }
+
         this.recebidos.addCandidato(novoCandidato);
 
         return codCandidato;
@@ -133,6 +141,28 @@ public class Segundo implements IProcessManager {
     }
 
     /**
+     * Encontra um candidato através das diferentes fases pelo nome.
+     * @param nome Nome do candidato.
+     * @return O candidato, caso seja encontrado, ou throw uma exceção.
+     * @throws CandidatoNaoEncontrado se nenhum candidato com o codCandidato foi encontrado.
+     */
+    public Candidato encontrarCandidatoPorNome(String nome) {
+        Candidato candidatoEncontrado = null;
+
+        for (AbsFase fase : AbsFase.fasesInstanciadas.values()) {
+            try {
+                Candidato candidato = fase.getCandidatoByNome(nome);
+                if (candidato != null) {
+                    candidatoEncontrado =  candidato;
+                }
+            } catch (CandidatoNaoEncontrado e) {}
+        }
+
+
+        return candidatoEncontrado;
+    }
+
+    /**
      * Verifica a faseAtual de um candidato.
      * @param codCandidato O código do candidato.
      * @return A fase atual do candidato como String.
@@ -141,7 +171,15 @@ public class Segundo implements IProcessManager {
     public String verificarStatusCandidato(int codCandidato) throws CandidatoNaoEncontrado {
         Candidato candidato = encontrarCandidateEmFases(codCandidato);
 
-        return candidato.getFaseAtual();
+        String faseAtual = candidato.getFaseAtual();
+        String faseAtualTrimmed = faseAtual;
+
+        if (faseAtual.endsWith("s")) {
+            faseAtualTrimmed = faseAtual.substring(0, faseAtual.length() - 1);
+        }
+
+
+        return faseAtualTrimmed;
     }
 
     /**
