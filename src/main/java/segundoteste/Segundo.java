@@ -39,6 +39,7 @@ public class Segundo implements IProcessManager {
 
         validator.setNext(validatorChar);
         validatorChar.setNext(validatorTam);
+        validator.validate(nome);
 
         int codCandidato = Segundo.CandidatosTotais + 1;
         Segundo.CandidatosTotais += 1;
