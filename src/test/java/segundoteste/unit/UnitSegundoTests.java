@@ -10,6 +10,8 @@ import org.junit.jupiter.api.Test;
 import segundoteste.errors.CandidatoNaoEncontrado;
 import segundoteste.errors.NomeInvalido;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class UnitSegundoTests {
@@ -184,5 +186,32 @@ class UnitSegundoTests {
         }
     }
 
+    @Nested
+    class testObterAprovados {
+        @Test
+        public void successfullyReturnsApprovedCandidates() throws CandidatoDuplicado, NomeInvalido, CandidatoNaoEncontrado {
+            Segundo segundo = new Segundo();
+            int codCandidato1 = segundo.iniciarProcesso("John");
+            int codCandidato2 = segundo.iniciarProcesso("Doe");
+
+            segundo.marcarEntrevista(codCandidato1);
+            segundo.marcarEntrevista(codCandidato2);
+
+            segundo.aprovarCandidato(codCandidato1);
+            segundo.aprovarCandidato(codCandidato2);
+
+            List<String> aprovados = segundo.obterAprovados();
+            assertTrue(aprovados.contains("John"));
+            assertTrue(aprovados.contains("Doe"));
+            assertEquals(aprovados.size(), 2);
+        }
+
+        @Test
+        public void returnsEmptyListWhenNoApprovedCandidates() {
+            Segundo segundo = new Segundo();
+            List<String> aprovados = segundo.obterAprovados();
+            assertTrue(aprovados.isEmpty());
+        }
+    }
 
 }
