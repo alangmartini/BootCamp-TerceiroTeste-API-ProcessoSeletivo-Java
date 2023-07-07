@@ -36,7 +36,11 @@ public abstract  class AbsFase implements IFase{
     public void addCandidato(Candidato novoCandidato) throws CandidatoDuplicado {
         boolean isExistente = candidatos
                 .stream()
-                .anyMatch(candidato -> candidato.getCodCandidato() == novoCandidato.getCodCandidato());
+                .anyMatch(
+                        candidato -> (
+                                candidato.getCodCandidato() == novoCandidato.getCodCandidato()
+                                || candidato.getNome() == novoCandidato.getNome()
+                ));
 
         if (isExistente) {
             throw new CandidatoDuplicado();

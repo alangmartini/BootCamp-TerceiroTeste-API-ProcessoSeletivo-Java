@@ -10,8 +10,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 
-// TODO: fazer AbsFase armazenar uma instancia de cada IFase
-
 // Chamado de Segundo para seguir os requerimentos do teste
 public class Segundo implements IProcessManager {
     // TODO: Ao invés de utilizar a quantidade de cadidatos para gerar o ID, criar um maneira randômica e/ou hasheada.
