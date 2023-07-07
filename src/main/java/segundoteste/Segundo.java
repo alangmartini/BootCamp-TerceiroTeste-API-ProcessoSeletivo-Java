@@ -20,18 +20,18 @@ public class Segundo implements IProcessManager {
 
     public Segundo() {
         try {
-            this.recebidos = FaseFactory.getFase(Recebidos.class);
-            this.qualificados = FaseFactory.getFase(Recebidos.class);
-            this.aprovados = FaseFactory.getFase(Recebidos.class);
+            this.recebidos = new Recebidos();
+            this.qualificados = new Qualificados();
+            this.aprovados = new Aprovados();
         } catch (Exception e) {
             System.out.println("Erro ao instanciar Fases do Processo");
         }
 
 
     }
-    public int iniciarProcesso(String nome) throws CandidatoDuplicado {
+    public synchronized int iniciarProcesso(String nome) throws CandidatoDuplicado {
         int codCandidato = Segundo.CandidatosTotais + 1;
-        CandidatosTotais += 1;
+        Segundo.CandidatosTotais += 1;
 
         Candidato novoCandidato = new Candidato(nome, codCandidato);
         this.recebidos.addCandidato(novoCandidato);

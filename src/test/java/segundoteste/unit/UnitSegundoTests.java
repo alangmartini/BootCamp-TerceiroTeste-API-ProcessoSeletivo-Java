@@ -1,30 +1,21 @@
-package segundoteste;
+package segundoteste.unit;
 
-import segundoteste.candidatos.Candidato;
+import segundoteste.Segundo;
 import segundoteste.errors.CandidatoDuplicado;
-import segundoteste.errors.CandidatoNaoEncontrado;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.*;
 
-class SegundoTests {
-    private Segundo segundo;
-
+class UnitSegundoTests {
     @Test
     void contextLoads() {
     }
 
-    @BeforeEach
-    public void setup() {
-        segundo = new Segundo();
-    }
-
     @Test
     public void testIniciarProcesso() throws CandidatoDuplicado {
+        Segundo segundo = new Segundo();
         int codCandidato = segundo.iniciarProcesso("John");
         assertNotNull(codCandidato);
         assertThrows(CandidatoDuplicado.class, () -> segundo.iniciarProcesso("John"));
