@@ -49,6 +49,16 @@ public abstract class AbsFase implements IFase {
         return candidate;
     }
 
+
+    public Candidato getCandidatoByNome(String nome) throws CandidatoNaoEncontrado {
+        Candidato candidate = candidatos.stream()
+              .filter(candidato -> candidato.getNome().equals(nome))
+              .findFirst()
+              .orElseThrow(CandidatoNaoEncontrado::new);
+
+        return candidate;
+    }
+
     /**
      * Este método adiciona um novo candidato à lista de candidatos desta fase.
      *
