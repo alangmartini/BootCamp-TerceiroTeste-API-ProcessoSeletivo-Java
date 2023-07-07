@@ -10,7 +10,7 @@ public class ValidatorCaracteres implements Validator {
     }
 
     public void validate(String nome) throws NomeInvalido {
-        if (!nome.matches("[a-zA-Z'-]+")) {
+        if (!nome.matches(".*[a-zA-Z\\p{L}'].+")) {
             throw new NomeInvalido();
         }
 
