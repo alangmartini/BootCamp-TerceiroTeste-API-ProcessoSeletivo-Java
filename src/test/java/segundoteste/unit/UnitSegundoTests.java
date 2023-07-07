@@ -1,6 +1,7 @@
 package segundoteste.unit;
 
 import segundoteste.Segundo;
+import segundoteste.candidatos.Candidato;
 import segundoteste.errors.CandidatoDuplicado;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -19,6 +20,9 @@ class UnitSegundoTests {
         int codCandidato = segundo.iniciarProcesso("John");
         assertNotNull(codCandidato);
         assertThrows(CandidatoDuplicado.class, () -> segundo.iniciarProcesso("John"));
+
+        Candidato candidato = segundo.encontrarCandidateEmFases(codCandidato);
+        assertEquals(candidato.getFaseAtual(), "Recebidos");
     }
 //
 //    @Test

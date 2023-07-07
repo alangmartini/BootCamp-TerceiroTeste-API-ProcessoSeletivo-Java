@@ -57,7 +57,7 @@ public class Segundo implements IProcessManager {
 
         AbsFase faseDoCandidato = AbsFase
                 .fasesInstanciadas
-                .get(candidatoADesqualificar.getFaseAtual().name());
+                .get(candidatoADesqualificar.getFaseAtual());
 
         faseDoCandidato.removeCandidato(codCandidato);
     }
@@ -84,7 +84,7 @@ public class Segundo implements IProcessManager {
     public String verificarStatusCandidato(int codCandidato) throws CandidatoNaoEncontrado {
         Candidato candidato = encontrarCandidateEmFases(codCandidato);
 
-        return candidato.getFaseAtual().name();
+        return candidato.getFaseAtual();
     }
 
     public List<String> obterAprovados() {

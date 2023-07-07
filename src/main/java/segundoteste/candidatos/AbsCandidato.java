@@ -7,8 +7,8 @@ public abstract class AbsCandidato {
     private int codCandidato;
     private String nome;
 
-    public EnumFase getFaseAtual() {
-        return faseAtual;
+    public String getFaseAtual() {
+        return faseAtual.name();
     }
 
     public void setFaseAtual(EnumFase faseAtual) {

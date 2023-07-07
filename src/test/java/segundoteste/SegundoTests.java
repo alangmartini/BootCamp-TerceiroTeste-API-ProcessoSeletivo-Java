@@ -28,6 +28,7 @@ class SegundoTests {
         int codCandidato = segundo.iniciarProcesso("John");
         assertNotNull(codCandidato);
         assertThrows(CandidatoDuplicado.class, () -> segundo.iniciarProcesso("John"));
+
     }
 //
 //    @Test
