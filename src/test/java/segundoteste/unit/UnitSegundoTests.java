@@ -105,64 +105,84 @@ class UnitSegundoTests {
             Segundo segundo = new Segundo();
             assertThrows(CandidatoNaoEncontrado.class, () -> segundo.aprovarCandidato(999));
         }
+
+        @Nested
+        class testDesqualificarCandidato {
+            @Test
+            public void successfullyDisqualifiesCandidate() throws CandidatoDuplicado, NomeInvalido, CandidatoNaoEncontrado {
+                Segundo segundo = new Segundo();
+                int codCandidato = segundo.iniciarProcesso("John");
+
+                Candidato candidato = segundo.encontrarCandidateEmFases(codCandidato);
+                assertEquals(candidato.getFaseAtual(), "Recebidos");
+
+                segundo.marcarEntrevista(codCandidato);
+                Candidato candidatoEntrevista = segundo.encontrarCandidateEmFases(codCandidato);
+                assertEquals(candidatoEntrevista.getFaseAtual(), "Qualificados");
+
+                segundo.desqualificarCandidato(codCandidato);
+                assertThrows(CandidatoNaoEncontrado.class, () -> segundo.encontrarCandidateEmFases(codCandidato));
+            }
+
+            @Test
+            public void throwsErrorOnNonExistentCandidate() {
+                Segundo segundo = new Segundo();
+                assertThrows(CandidatoNaoEncontrado.class, () -> segundo.desqualificarCandidato(999));
+            }
+        }
+    }
+
+    @Nested
+    class testEncontrarCandidateEmFases {
+        @Test
+        public void successfullyFindsCandidate() throws CandidatoDuplicado, NomeInvalido, CandidatoNaoEncontrado {
+            Segundo segundo = new Segundo();
+            int codCandidato = segundo.iniciarProcesso("John");
+
+            Candidato candidato = segundo.encontrarCandidateEmFases(codCandidato);
+            assertEquals(candidato.getFaseAtual(), "Recebidos");
+
+            segundo.marcarEntrevista(codCandidato);
+            Candidato candidatoEntrevista = segundo.encontrarCandidateEmFases(codCandidato);
+            assertEquals(candidatoEntrevista.getFaseAtual(), "Qualificados");
+
+            segundo.aprovarCandidato(codCandidato);
+            Candidato candidatoAprovado = segundo.encontrarCandidateEmFases(codCandidato);
+            assertEquals(candidatoAprovado.getFaseAtual(), "Aprovados");
+        }
+
+        @Test
+        public void throwsErrorOnNonExistentCandidate() {
+            Segundo segundo = new Segundo();
+            assertThrows(CandidatoNaoEncontrado.class, () -> segundo.encontrarCandidateEmFases(999));
+        }
+    }
+
+    @Nested
+    class testVerificarStatusCandidato {
+        @Test
+        public void successfullyReturnsCandidateStatus() throws CandidatoDuplicado, NomeInvalido, CandidatoNaoEncontrado {
+            Segundo segundo = new Segundo();
+            int codCandidato = segundo.iniciarProcesso("John");
+
+            String status = segundo.verificarStatusCandidato(codCandidato);
+            assertEquals(status, "Recebidos");
+
+            segundo.marcarEntrevista(codCandidato);
+            status = segundo.verificarStatusCandidato(codCandidato);
+            assertEquals(status, "Qualificados");
+
+            segundo.aprovarCandidato(codCandidato);
+            status = segundo.verificarStatusCandidato(codCandidato);
+            assertEquals(status, "Aprovados");
+        }
+
+        @Test
+        public void throwsErrorOnNonExistentCandidate() {
+            Segundo segundo = new Segundo();
+            assertThrows(CandidatoNaoEncontrado.class, () -> segundo.verificarStatusCandidato(999));
+        }
     }
 
 
-//    @Test
-//    public void testMarcarEntrevista() throws CandidatoNaoEncontrado, CandidatoDuplicado {
-//        Segundo segundo = new Segundo();
-//
-//        int codCandidato = segundo.iniciarProcesso("John");
-//
-//        segundo.marcarEntrevista(codCandidato);
-//
-//        assertEquals("Qualificados", segundo.verificarStatusCandidato(codCandidato));
-//        assertThrows(CandidatoNaoEncontrado.class, () -> segundo.marcarEntrevista(999));
-//    }
-//
-//    @Test
-//    public void testAprovarCandidato() throws CandidatoNaoEncontrado, CandidatoDuplicado {
-//        int codCandidato = segundo.iniciarProcesso("John");
-//        segundo.marcarEntrevista(codCandidato);
-//        segundo.aprovarCandidato(codCandidato);
-//        assertEquals("Aprovados", segundo.verificarStatusCandidato(codCandidato));
-//    }
-//
-//    @Test
-//    public void testDesqualificarCandidato() throws CandidatoNaoEncontrado, CandidatoDuplicado {
-//        int codCandidato = segundo.iniciarProcesso("John");
-//        segundo.marcarEntrevista(codCandidato);
-//        segundo.desqualificarCandidato(codCandidato);
-//        assertThrows(CandidatoNaoEncontrado.class, () -> segundo.verificarStatusCandidato(codCandidato));
-//    }
-//
-//    @Test
-//    public void testEncontrarCandidateEmFases() throws CandidatoDuplicado, CandidatoNaoEncontrado {
-//        int codCandidato = segundo.iniciarProcesso("John");
-//        Candidato candidato = segundo.encontrarCandidateEmFases(codCandidato);
-//        assertNotNull(candidato);
-//        assertEquals("John", candidato.getNome());
-//        assertThrows(CandidatoNaoEncontrado.class, () -> segundo.encontrarCandidateEmFases(999));
-//    }
-//
-//    @Test
-//    public void testVerificarStatusCandidato() throws CandidatoDuplicado, CandidatoNaoEncontrado {
-//        int codCandidato = segundo.iniciarProcesso("John");
-//        assertEquals("Recebidos", segundo.verificarStatusCandidato(codCandidato));
-//        assertThrows(CandidatoNaoEncontrado.class, () -> segundo.verificarStatusCandidato(999));
-//    }
-//
-//    @Test
-//    public void testObterAprovados() throws CandidatoDuplicado, CandidatoNaoEncontrado {
-//        int codCandidato1 = segundo.iniciarProcesso("John");
-//        int codCandidato2 = segundo.iniciarProcesso("Jane");
-//        segundo.marcarEntrevista(codCandidato1);
-//        segundo.marcarEntrevista(codCandidato2);
-//        segundo.aprovarCandidato(codCandidato1);
-//        segundo.aprovarCandidato(codCandidato2);
-//        List<String> aprovados = segundo.obterAprovados();
-//        assertEquals(2, aprovados.size());
-//        assertTrue(aprovados.contains("John"));
-//        assertTrue(aprovados.contains("Jane"));
-//    }
 }
