@@ -12,6 +12,5 @@ public  class Candidato extends AbsCandidato {
     ) {
         this.setNome(nome);
         this.setCodCandidato(codCandidato);
-        this.setFaseAtual(EnumFase.Recebidos);
     }
 }

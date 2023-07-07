@@ -46,6 +46,7 @@ public abstract  class AbsFase implements IFase{
             throw new CandidatoDuplicado();
         }
 
+        novoCandidato.setFaseAtual(this.getClass().getName());
         candidatos.add(novoCandidato);
     }
     @Override

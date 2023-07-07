@@ -3,15 +3,15 @@ package segundoteste.candidatos;
 import segundoteste.fases.EnumFase;
 
 public abstract class AbsCandidato {
-    private EnumFase faseAtual;
+    private String faseAtual;
     private int codCandidato;
     private String nome;
 
     public String getFaseAtual() {
-        return faseAtual.name();
+        return faseAtual;
     }
 
-    public void setFaseAtual(EnumFase faseAtual) {
+    public void setFaseAtual(String faseAtual) {
         this.faseAtual = faseAtual;
     }
 
