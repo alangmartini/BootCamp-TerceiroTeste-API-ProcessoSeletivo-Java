@@ -13,7 +13,6 @@ public class UnitAbsFaseTests {
 
     @Nested
     class TestAbsFase {
-
         @Test
         public void successfullyAddCandidate() throws CandidatoDuplicado {
             AbsFase fase = new Aprovados();
