@@ -32,7 +32,7 @@ class StartRouteTests {
 					.contentType(MediaType.APPLICATION_JSON)
 					.content(requestBody))
 				.andExpect(status().isCreated())
-				.andExpect(content().string("{\"id\":1}"));
+				.andExpect(content().string("{\"id\":\"1\"}"));
 	}
 
 	void testNomeInvalidoStringVazia() throws Exception {

@@ -1,6 +1,7 @@
 package org.ibmBootCamp.terceiroTeste.controllers;
 
 import org.ibmBootCamp.terceiroTeste.entities.pessoa.Pessoa;
+import org.ibmBootCamp.terceiroTeste.services.ProcessManagerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -16,38 +17,41 @@ import segundoteste.errors.NomeInvalido;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/hiring")
-public class ProcessManager {
-  private final IProcessManager processManagerService = new Segundo();
+public class ProcessManagerController {
+  private final ProcessManagerService processManagerService;
+
+	public ProcessManagerController(ProcessManagerService processManagerService) {
+		this.processManagerService = processManagerService;
+	}
 
   public <T> ResponseEntity<T> setResponse(
-	  HttpStatus status,
-	  T body
+	  T body,
+	  HttpStatus status
   ) {
 	return ResponseEntity
 		.status(status)
 		.contentType(MediaType.APPLICATION_JSON)
 		.body(body);
   }
+
   @PostMapping("/start")
   public ResponseEntity<?> iniciarProjeto(@RequestBody Pessoa pessoa) {
     String nome = pessoa.getNome();
 
-	try {
-		int codCandidatoCriado = this.processManagerService
-			.iniciarProcesso(nome);
+	ServiceResponse iniciarProcessoResponse =
+		processManagerService.iniciarProcesso(nome);
 
-		Map<String, Integer> responseBody = new HashMap<>();
-		responseBody.put("id", codCandidatoCriado);
+	  Map<String, String> responseBody = new HashMap<>();
+	  responseBody.put("id", iniciarProcessoResponse.getMessage());
 
-		return setResponse(HttpStatus.CREATED, responseBody);
-	} catch (CandidatoDuplicado e) {
-		return setResponse(HttpStatus.BAD_REQUEST, e.getMessage());
-	} catch (NomeInvalido e) {
-		return setResponse(HttpStatus.BAD_REQUEST, e.getMessage());
-	}
+	return setResponse(
+			responseBody,
+			iniciarProcessoResponse.getStatus()
+		);
   }
 
 
