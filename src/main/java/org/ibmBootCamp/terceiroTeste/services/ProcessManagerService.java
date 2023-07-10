@@ -51,4 +51,22 @@ public class ProcessManagerService {
 			return new ServiceResponse(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
 	}
+
+
+	public ServiceResponse disqualifyCandidato(Integer codCandidato) {
+		try {
+			this.processManager.desqualificarCandidato(codCandidato);
+
+			Map<String, String> responseBody = createJSON(
+				"message",
+				"Candidato Desqualificado"
+			);
+
+			return new ServiceResponse(
+				responseBody.toString(),
+				HttpStatus.OK);
+		} catch (CandidatoNaoEncontrado e) {
+			return new ServiceResponse(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+	}
 }

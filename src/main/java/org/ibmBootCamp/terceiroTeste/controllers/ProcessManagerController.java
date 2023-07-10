@@ -41,7 +41,7 @@ public class ProcessManagerController {
 	}
 
 	@PostMapping("/start")
-	public ResponseEntity<?> iniciarProjeto(@RequestBody Pessoa pessoa) {
+	public ResponseEntity<?> iniciarProcesso(@RequestBody Pessoa pessoa) {
 	String nome = pessoa.getNome();
 
 	ServiceResponse iniciarProcessoResponse =
@@ -54,19 +54,31 @@ public class ProcessManagerController {
 	}
 
     @PostMapping("/schedule")
-	public ResponseEntity<?> scheduleInterview(@RequestBody CodCandidatoHolder codCandidatoHolder) {
+	public ResponseEntity<?> marcarEntrevista(@RequestBody CodCandidatoHolder codCandidatoHolder) {
 		Integer codCandidato = codCandidatoHolder.getCodCandidato();
 
-		ServiceResponse scheduleIntervewResponse = processManagerService
+		ServiceResponse scheduleInterviewResponse = processManagerService
 			.scheduleInterview(codCandidato);
 
 		return setResponse(
-			scheduleIntervewResponse.getMessage(),
-			scheduleIntervewResponse.getStatus()
+			scheduleInterviewResponse.getMessage(),
+			scheduleInterviewResponse.getStatus()
 		);
 	}
 
-//  @PostMapping("/disqualify");
+	@PostMapping("/disqualify")
+	public ResponseEntity<?> desqualificarCandidato(@RequestBody CodCandidatoHolder codCandidatoHolder) {
+		Integer codCandidato = codCandidatoHolder.getCodCandidato();
+
+		ServiceResponse disqualifyResponse = processManagerService
+			.disqualifyCandidato(codCandidato);
+
+		return setResponse(
+			disqualifyResponse.getMessage(),
+			disqualifyResponse.getStatus()
+		);
+	}
+
 //  @PostMapping("/approve");
 //  @GetMapping("candidate/:id");
 //  @GetMapping("approved");
