@@ -1,4 +1,4 @@
-package org.ibmBootCamp.terceiroTeste;
+package org.ibmBootCamp.terceiroTeste.processManagerTests;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,63 +15,44 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class StartRouteTests {
+class ScheduleRouteTests {
 
-    @Autowired
-    private MockMvc mockMvc;
+	@Autowired
+	private MockMvc mockMvc;
 
 	@Test
 	void testSuccesful() throws Exception {
 		String requestBody = "{ \"nome\": \"Fulano de tal\" }";
-
-		Map<String, Integer> responseBody = new HashMap<>();
-		responseBody.put("id", 1);
+		String requestBodyCodCandidato = "{ \"codCandidato\": 1 }";
 
 		mockMvc.perform(
 				post("/api/v1/hiring/start")
 					.contentType(MediaType.APPLICATION_JSON)
-					.content(requestBody))
-				.andExpect(status().isCreated())
-				.andExpect(content().string("{\"id\":\"1\"}"));
-	}
+					.content(requestBody));
 
-	void testNomeInvalidoStringVazia() throws Exception {
-		String requestBody = "{ \"nome\": \"\" }";
 
 		mockMvc.perform(
-				post("/api/v1/hiring/start")
+				post("/api/v1/hiring/schedule")
 					.contentType(MediaType.APPLICATION_JSON)
-					.content(requestBody))
-			.andExpect(status().isBadRequest())
-			.andExpect(content().string("Nome inválido"));
-	}
-
-	void testNomeInvalidoSemCorpo() throws Exception {
-		String requestBody = "{ }";
-
-		mockMvc.perform(
-				post("/api/v1/hiring/start")
-					.contentType(MediaType.APPLICATION_JSON)
-					.content(requestBody))
-			.andExpect(status().isBadRequest())
-			.andExpect(content().string("Nome inválido"));
-	}
-
-	void testCandidatoDuplicado() throws Exception {
-		String requestBody = "{ \"nome\": \"Fulano de tal\" }";
-
-		mockMvc.perform(
-				post("/api/v1/hiring/start")
-					.contentType(MediaType.APPLICATION_JSON)
-					.content(requestBody))
+					.content(requestBodyCodCandidato))
 			.andExpect(status().isOk())
-			.andExpect(content().string("1"));
+			.andExpect(content().string("{message=Entrevista Marcada}"));
+	}
+
+	void testCandidatoNaoEncontrado() throws Exception {
+		String requestBody = "{ \"nome\": \"Fulano de tal\" }";
+		String requestBodyCodCandidato = "{ \"codCandidato\": 10 }";
 
 		mockMvc.perform(
 				post("/api/v1/hiring/start")
 					.contentType(MediaType.APPLICATION_JSON)
-					.content(requestBody))
+					.content(requestBody));
+
+		mockMvc.perform(
+				post("/api/v1/hiring/schedule")
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(requestBodyCodCandidato))
 			.andExpect(status().isBadRequest())
-			.andExpect(content().string("Candidato Duplicado"));
+			.andExpect(content().string("Candidato não encontrado"));
 	}
 }
