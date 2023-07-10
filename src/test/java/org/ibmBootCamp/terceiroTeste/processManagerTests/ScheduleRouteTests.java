@@ -16,7 +16,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 class ScheduleRouteTests {
-
 	@Autowired
 	private MockMvc mockMvc;
 
@@ -30,7 +29,6 @@ class ScheduleRouteTests {
 					.contentType(MediaType.APPLICATION_JSON)
 					.content(requestBody));
 
-
 		mockMvc.perform(
 				post("/api/v1/hiring/schedule")
 					.contentType(MediaType.APPLICATION_JSON)
@@ -39,6 +37,7 @@ class ScheduleRouteTests {
 			.andExpect(content().string("{message=Entrevista Marcada}"));
 	}
 
+	@Test
 	void testCandidatoNaoEncontrado() throws Exception {
 		String requestBody = "{ \"nome\": \"Fulano de tal\" }";
 		String requestBodyCodCandidato = "{ \"codCandidato\": 10 }";
@@ -53,6 +52,6 @@ class ScheduleRouteTests {
 					.contentType(MediaType.APPLICATION_JSON)
 					.content(requestBodyCodCandidato))
 			.andExpect(status().isBadRequest())
-			.andExpect(content().string("Candidato não encontrado"));
+			.andExpect(content().string("Candidato nao encontrado"));
 	}
 }
