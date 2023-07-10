@@ -1,5 +1,7 @@
 package org.ibmBootCamp.terceiroTeste.controllers;
 
+import org.apache.coyote.Response;
+import org.ibmBootCamp.terceiroTeste.entities.codCandidatoHolder.CodCandidatoHolder;
 import org.ibmBootCamp.terceiroTeste.entities.pessoa.Pessoa;
 import org.ibmBootCamp.terceiroTeste.services.ProcessManagerService;
 import org.springframework.http.HttpStatus;
@@ -28,34 +30,42 @@ public class ProcessManagerController {
 		this.processManagerService = processManagerService;
 	}
 
-  public <T> ResponseEntity<T> setResponse(
+	public <T> ResponseEntity<T> setResponse(
 	  T body,
 	  HttpStatus status
-  ) {
+	) {
 	return ResponseEntity
 		.status(status)
 		.contentType(MediaType.APPLICATION_JSON)
 		.body(body);
-  }
+	}
 
-  @PostMapping("/start")
-  public ResponseEntity<?> iniciarProjeto(@RequestBody Pessoa pessoa) {
-    String nome = pessoa.getNome();
+	@PostMapping("/start")
+	public ResponseEntity<?> iniciarProjeto(@RequestBody Pessoa pessoa) {
+	String nome = pessoa.getNome();
 
 	ServiceResponse iniciarProcessoResponse =
 		processManagerService.iniciarProcesso(nome);
 
-	  Map<String, String> responseBody = new HashMap<>();
-	  responseBody.put("id", iniciarProcessoResponse.getMessage());
-
 	return setResponse(
-			responseBody,
+			iniciarProcessoResponse.getMessage(),
 			iniciarProcessoResponse.getStatus()
 		);
-  }
+	}
 
+    @PostMapping("/schedule")
+	public ResponseEntity<?> scheduleInterview(@RequestBody CodCandidatoHolder codCandidatoHolder) {
+		Integer codCandidato = codCandidatoHolder.getCodCandidato();
 
-//  @PostMapping("/schedule");
+		ServiceResponse scheduleIntervewResponse = processManagerService
+			.scheduleInterview(codCandidato);
+
+		return setResponse(
+			scheduleIntervewResponse.getMessage(),
+			scheduleIntervewResponse.getStatus()
+		);
+	}
+
 //  @PostMapping("/disqualify");
 //  @PostMapping("/approve");
 //  @GetMapping("candidate/:id");
