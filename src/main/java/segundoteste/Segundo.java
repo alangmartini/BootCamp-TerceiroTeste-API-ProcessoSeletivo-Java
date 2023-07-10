@@ -60,17 +60,16 @@ public class Segundo implements IProcessManager {
         validatorChar.setNext(validatorTam);
         validator.validate(nome);
 
+	    Candidato possivelCandidato = this.encontrarCandidatoPorNome(nome);
+
+	    if (possivelCandidato != null) {
+		    throw new CandidatoDuplicado();
+	    }
+
         int codCandidato = Segundo.CandidatosTotais + 1;
-        Segundo.CandidatosTotais += 1;
+	    Segundo.CandidatosTotais += 1;
 
         Candidato novoCandidato = new Candidato(nome, codCandidato);
-
-
-        Candidato possivelCandidato = this.encontrarCandidatoPorNome(nome);
-
-        if (possivelCandidato != null) {
-            throw new CandidatoDuplicado();
-        }
 
         this.recebidos.addCandidato(novoCandidato);
 
