@@ -39,9 +39,13 @@ public class Segundo implements IProcessManager {
         } catch (Exception e) {
             System.out.println("Erro ao instanciar Fases do Processo");
         }
-
-
     }
+
+	public void reset() {
+		this.recebidos = new Recebidos();
+		this.qualificados = new Qualificados();
+		this.aprovados = new Aprovados();
+	}
 
     /**
      * Inicia o processo para um candidato. Realiza uma validação de nome.

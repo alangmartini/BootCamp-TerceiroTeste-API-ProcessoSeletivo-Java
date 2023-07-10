@@ -7,6 +7,7 @@ import org.ibmBootCamp.terceiroTeste.services.ProcessManagerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -79,7 +80,29 @@ public class ProcessManagerController {
 		);
 	}
 
-//  @PostMapping("/approve");
+    @PostMapping("/approve")
+    public ResponseEntity<?> aprovarCandidato(@RequestBody CodCandidatoHolder codCandidatoHolder) {
+	    Integer codCandidato = codCandidatoHolder.getCodCandidato();
+
+	    ServiceResponse approveResponse = processManagerService
+		    .approveCandidato(codCandidato);
+
+	    return setResponse(
+		    approveResponse.getMessage(),
+		    approveResponse.getStatus()
+	    );
+    }
+
+	@DeleteMapping("/reset")
+	public ResponseEntity<?> resetProcess(@RequestBody CodCandidatoHolder codCandidatoHolder) {
+		ServiceResponse resetResponse = processManagerService.reset();
+
+		return setResponse(
+			resetResponse.getMessage(),
+			resetResponse.getStatus()
+		);
+	}
+
 //  @GetMapping("candidate/:id");
 //  @GetMapping("approved");
 

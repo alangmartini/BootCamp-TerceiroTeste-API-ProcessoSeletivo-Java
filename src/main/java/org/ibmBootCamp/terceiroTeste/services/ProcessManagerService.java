@@ -69,4 +69,34 @@ public class ProcessManagerService {
 			return new ServiceResponse(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
 	}
+
+	public ServiceResponse approveCandidato(Integer codCandidato) {
+		try {
+			this.processManager.aprovarCandidato(codCandidato);
+
+			Map<String, String> responseBody = createJSON(
+				"message",
+				"Candidato Aprovado"
+			);
+
+			return new ServiceResponse(
+				responseBody.toString(),
+				HttpStatus.OK);
+		} catch (CandidatoNaoEncontrado e) {
+			return new ServiceResponse(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+	}
+
+	public ServiceResponse reset() {
+		processManager.reset();
+
+		Map<String, String> responseBody = createJSON(
+			"message",
+			"Processo Reiniciado"
+		);
+
+		return new ServiceResponse(
+			responseBody.toString(),
+			HttpStatus.OK);
+	}
 }

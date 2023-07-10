@@ -50,4 +50,9 @@ public interface IProcessManager {
      * @return Uma lista com os nomes dos candidatos aprovados.
      */
     public List<String> obterAprovados();
+
+	/**
+	 * Este método reseta o ProcessManager.
+	 */
+	public void reset();
 }
