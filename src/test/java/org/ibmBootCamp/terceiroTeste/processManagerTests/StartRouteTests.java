@@ -1,5 +1,7 @@
 package org.ibmBootCamp.terceiroTeste.processManagerTests;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -20,9 +22,15 @@ class StartRouteTests {
     @Autowired
     private MockMvc mockMvc;
 
+	@BeforeEach
+	void tearDown() throws Exception {
+		mockMvc.perform(
+			delete("/api/v1/hiring/reset"));
+	}
+
 	@Test
 	void testSuccesful() throws Exception {
-		String requestBody = "{ \"nome\": \"Fulano de tal\" }";
+		String requestBody = "{ \"nome\": \"Fulano de tal10\" }";
 
 		Map<String, Integer> responseBody = new HashMap<>();
 		responseBody.put("id", 1);
@@ -32,7 +40,7 @@ class StartRouteTests {
 					.contentType(MediaType.APPLICATION_JSON)
 					.content(requestBody))
 				.andExpect(status().isCreated())
-				.andExpect(content().string("{\"id\":\"1\"}"));
+				.andExpect(content().string("{id=3}"));
 	}
 
 	void testNomeInvalidoStringVazia() throws Exception {

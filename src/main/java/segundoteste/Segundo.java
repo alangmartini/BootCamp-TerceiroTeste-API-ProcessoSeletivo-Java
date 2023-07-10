@@ -45,6 +45,7 @@ public class Segundo implements IProcessManager {
 		this.recebidos = new Recebidos();
 		this.qualificados = new Qualificados();
 		this.aprovados = new Aprovados();
+		Segundo.CandidatosTotais = 0;
 	}
 
     /**

@@ -1,5 +1,6 @@
 package org.ibmBootCamp.terceiroTeste.processManagerTests;
 
+	import org.junit.jupiter.api.AfterEach;
 	import org.junit.jupiter.api.Test;
 	import org.springframework.beans.factory.annotation.Autowired;
 	import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -18,6 +19,12 @@ package org.ibmBootCamp.terceiroTeste.processManagerTests;
 class DisqualifyRouteTests {
 	@Autowired
 	private MockMvc mockMvc;
+
+	@AfterEach
+	void tearDown() throws Exception {
+		mockMvc.perform(
+			delete("/api/v1/hiring/reset"));
+	}
 
 	@Test
 	void testSuccesfulCandidatoRecebido() throws Exception {
