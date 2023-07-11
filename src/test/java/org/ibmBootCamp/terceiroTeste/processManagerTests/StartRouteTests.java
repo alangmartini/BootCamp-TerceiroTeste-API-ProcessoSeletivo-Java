@@ -1,5 +1,7 @@
 package org.ibmBootCamp.terceiroTeste.processManagerTests;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.ibmBootCamp.terceiroTeste.entities.codCandidatoHolder.CodCandidatoHolder;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,6 +24,8 @@ class StartRouteTests {
     @Autowired
     private MockMvc mockMvc;
 
+	private ObjectMapper objectMapper = new ObjectMapper();
+
 	@BeforeEach
 	void tearDown() throws Exception {
 		mockMvc.perform(
@@ -30,17 +34,16 @@ class StartRouteTests {
 
 	@Test
 	void testSuccesful() throws Exception {
-		String requestBody = "{ \"nome\": \"Fulano de tal10\" }";
+		String requestBody = "{ \"nome\": \"Fulano de tal\" }";
 
-		Map<String, Integer> responseBody = new HashMap<>();
-		responseBody.put("id", 1);
+		CodCandidatoHolder codCandidatoHolder = new CodCandidatoHolder(1);
 
 		mockMvc.perform(
 				post("/api/v1/hiring/start")
 					.contentType(MediaType.APPLICATION_JSON)
 					.content(requestBody))
 				.andExpect(status().isCreated())
-				.andExpect(content().string("{id=3}"));
+				.andExpect(content().string(objectMapper.writeValueAsString(codCandidatoHolder)));
 	}
 
 	void testNomeInvalidoStringVazia() throws Exception {
@@ -71,9 +74,7 @@ class StartRouteTests {
 		mockMvc.perform(
 				post("/api/v1/hiring/start")
 					.contentType(MediaType.APPLICATION_JSON)
-					.content(requestBody))
-			.andExpect(status().isOk())
-			.andExpect(content().string("1"));
+					.content(requestBody));
 
 		mockMvc.perform(
 				post("/api/v1/hiring/start")

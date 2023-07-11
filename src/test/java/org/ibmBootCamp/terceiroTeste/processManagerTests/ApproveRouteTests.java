@@ -52,8 +52,8 @@ class ApproveRouteTests {
 
 	@Test
 	void testCandidatoNaoEncontrado() throws Exception {
-		String requestBody = "{ \"nome\": \"Fulano de ta1l\" }";
-		String requestBodyCodCandidato = "{ \"codCandidato\": 2 }";
+		String requestBody = "{ \"nome\": \"Fulano de tal\" }";
+		String requestBodyCodCandidato = "{ \"codCandidato\": 1 }";
 		String requestBodyCodCandidatoNaoEncontrado = "{ \"codCandidato\": 10" +
 			" }";
 

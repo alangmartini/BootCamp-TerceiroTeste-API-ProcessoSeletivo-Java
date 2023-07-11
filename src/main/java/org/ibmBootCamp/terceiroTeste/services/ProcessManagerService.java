@@ -1,6 +1,8 @@
 package org.ibmBootCamp.terceiroTeste.services;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.ibmBootCamp.terceiroTeste.controllers.ServiceResponse;
+import org.ibmBootCamp.terceiroTeste.entities.codCandidatoHolder.CodCandidatoHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import segundoteste.IProcessManager;
@@ -25,9 +27,10 @@ public class ProcessManagerService {
 		try {
 			int codCandidato = this.processManager.iniciarProcesso(name);
 
-			Map<String, String> responseBody = createJSON("id", codCandidato);
+			CodCandidatoHolder codCandidatoHolder =
+				new CodCandidatoHolder(codCandidato);
 
-			return new ServiceResponse(responseBody.toString(), HttpStatus.CREATED);
+			return new ServiceResponse(codCandidatoHolder, HttpStatus.CREATED);
 		} catch (Exception e) {
 			return new ServiceResponse(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}

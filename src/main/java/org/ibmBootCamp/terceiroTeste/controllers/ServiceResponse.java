@@ -2,20 +2,32 @@ package org.ibmBootCamp.terceiroTeste.controllers;
 
 import org.springframework.http.HttpStatus;
 
-public class ServiceResponse {
-	private String bodyOrErrorMessage;
+/**
+ * Objeto criado para padronizar respostas do Service. Como
+ * o Spring Stringifica o corpo automaticamente, bodyOrErrorMessage pode
+ * ser uma String ou não.
+ *
+ * @param <T> Tipo de bodyOrErrorsMessage.
+ */
+public class ServiceResponse<T> {
+	private T bodyOrErrorMessage;
 	private HttpStatus status;
 
-	public ServiceResponse(String message, HttpStatus status) {
-		this.bodyOrErrorMessage = message;
+	/**
+	 * Inicializador.
+	 * @param bodyOrErrorMessage
+	 * @param status
+	 */
+	public ServiceResponse(T bodyOrErrorMessage, HttpStatus status) {
+		this.bodyOrErrorMessage = bodyOrErrorMessage;
 		this.status = status;
 	}
 
-	public String getMessage() {
+	public T getMessage() {
 		return bodyOrErrorMessage;
 	}
 
-	public void setMessage(String message) {
+	public void setMessage(T message) {
 		this.bodyOrErrorMessage = message;
 	}
 

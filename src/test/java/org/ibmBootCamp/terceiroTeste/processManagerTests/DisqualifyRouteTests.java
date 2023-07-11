@@ -28,7 +28,7 @@ class DisqualifyRouteTests {
 
 	@Test
 	void testSuccesfulCandidatoRecebido() throws Exception {
-		String requestBody = "{ \"nome\": \"Fulano de tal1\" }";
+		String requestBody = "{ \"nome\": \"Fulano de tal\" }";
 		String requestBodyCodCandidato = "{ \"codCandidato\": 1 }";
 
 		mockMvc.perform(
@@ -46,8 +46,8 @@ class DisqualifyRouteTests {
 
 	@Test
 	void testSuccesfulCandidatoQualificado() throws Exception {
-		String requestBody = "{ \"nome\": \"Fulano de tal2\" }";
-		String requestBodyCodCandidato = "{ \"codCandidato\": 2 }";
+		String requestBody = "{ \"nome\": \"Fulano de tal\" }";
+		String requestBodyCodCandidato = "{ \"codCandidato\": 1 }";
 
 		mockMvc.perform(
 			post("/api/v1/hiring/start")
@@ -69,8 +69,8 @@ class DisqualifyRouteTests {
 
 	@Test
 	void testSuccesfulCandidatoAprovado() throws Exception {
-		String requestBody = "{ \"nome\": \"Fulano de tal3\" }";
-		String requestBodyCodCandidato = "{ \"codCandidato\": 3 }";
+		String requestBody = "{ \"nome\": \"Fulano de tal\" }";
+		String requestBodyCodCandidato = "{ \"codCandidato\": 1 }";
 
 		mockMvc.perform(
 			post("/api/v1/hiring/start")
@@ -97,7 +97,7 @@ class DisqualifyRouteTests {
 
 	@Test
 	void testCandidatoNaoEncontradoCandidatoRecebido() throws Exception {
-		String requestBody = "{ \"nome\": \"Fulano de tal4\" }";
+		String requestBody = "{ \"nome\": \"Fulano de tal\" }";
 		String requestBodyCodCandidatoNaoEncontrado = "{ \"codCandidato\": 10" +
 			" }";
 
@@ -116,8 +116,8 @@ class DisqualifyRouteTests {
 
 	@Test
 	void testNaoEncontradoCandidatoQualificado() throws Exception {
-		String requestBody = "{ \"nome\": \"Fulano de tal5\" }";
-		String requestBodyCodCandidato = "{ \"codCandidato\": 5 }";
+		String requestBody = "{ \"nome\": \"Fulano de tal\" }";
+		String requestBodyCodCandidato = "{ \"codCandidato\": 1 }";
 		String requestBodyCodCandidatoNaoEncontrado = "{ \"codCandidato\": 10" +
 			" }";
 
@@ -141,8 +141,8 @@ class DisqualifyRouteTests {
 
 	@Test
 	void testNaoEncontradoCandidatoAprovado() throws Exception {
-		String requestBody = "{ \"nome\": \"Fulano de tal6\" }";
-		String requestBodyCodCandidato = "{ \"codCandidato\": 6 }";
+		String requestBody = "{ \"nome\": \"Fulano de tal\" }";
+		String requestBodyCodCandidato = "{ \"codCandidato\": 1 }";
 		String requestBodyCodCandidatoNaoEncontrado = "{ \"codCandidato\": 10" +
 			" }";
 

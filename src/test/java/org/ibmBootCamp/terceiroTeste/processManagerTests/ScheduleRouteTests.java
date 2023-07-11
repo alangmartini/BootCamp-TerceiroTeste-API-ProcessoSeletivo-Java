@@ -31,7 +31,7 @@ class ScheduleRouteTests {
 	@Test
 	void testSuccesful() throws Exception {
 		String requestBody = "{ \"nome\": \"Fulano de tal\" }";
-		String requestBodyCodCandidato = "{ \"codCandidato\": 10 }";
+		String requestBodyCodCandidato = "{ \"codCandidato\": 1 }";
 
 		mockMvc.perform(
 				post("/api/v1/hiring/start")
