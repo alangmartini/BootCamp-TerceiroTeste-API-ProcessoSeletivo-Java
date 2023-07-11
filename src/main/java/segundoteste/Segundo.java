@@ -172,7 +172,7 @@ public class Segundo implements IProcessManager {
      */
     public String verificarStatusCandidato(int codCandidato) throws CandidatoNaoEncontrado {
         Candidato candidato = encontrarCandidateEmFases(codCandidato);
-		System.out.println(candidato.getNome());
+
         String faseAtual = candidato.getFaseAtual();
         String faseAtualTrimmed = faseAtual;
 
