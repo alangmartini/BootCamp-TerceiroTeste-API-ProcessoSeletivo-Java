@@ -21,7 +21,7 @@ class ScheduleRouteTests {
 	@Autowired
 	private MockMvc mockMvc;
 
-	@AfterEach
+	@BeforeEach
 	void tearDown() throws Exception {
 		mockMvc.perform(
 			delete("/api/v1/hiring/reset"));

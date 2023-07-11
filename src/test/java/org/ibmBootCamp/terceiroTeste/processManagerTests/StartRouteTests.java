@@ -46,6 +46,39 @@ class StartRouteTests {
 				.andExpect(content().string(objectMapper.writeValueAsString(codCandidatoHolder)));
 	}
 
+	@Test
+	void testSuccesfulMultiple() throws Exception {
+		String requestBody = "{ \"nome\": \"Fulano de tal\" }";
+		String requestBody2 = "{ \"nome\": \"Beltrano de tal\" }";
+		String requestBody3 = "{ \"nome\": \"Ciclano de tal\" }";
+
+		CodCandidatoHolder codCandidatoHolder = new CodCandidatoHolder(1);
+		CodCandidatoHolder codCandidatoHolder2 = new CodCandidatoHolder(2);
+		CodCandidatoHolder codCandidatoHolder3 = new CodCandidatoHolder(3);
+
+		mockMvc.perform(
+				post("/api/v1/hiring/start")
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(requestBody))
+			.andExpect(status().isCreated())
+			.andExpect(content().string(objectMapper.writeValueAsString(codCandidatoHolder)));
+
+		mockMvc.perform(
+				post("/api/v1/hiring/start")
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(requestBody2))
+			.andExpect(status().isCreated())
+			.andExpect(content().string(objectMapper.writeValueAsString(codCandidatoHolder2)));
+
+		mockMvc.perform(
+				post("/api/v1/hiring/start")
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(requestBody3))
+			.andExpect(status().isCreated())
+			.andExpect(content().string(objectMapper.writeValueAsString(codCandidatoHolder3)));
+	}
+
+	@Test
 	void testNomeInvalidoStringVazia() throws Exception {
 		String requestBody = "{ \"nome\": \"\" }";
 
@@ -54,9 +87,10 @@ class StartRouteTests {
 					.contentType(MediaType.APPLICATION_JSON)
 					.content(requestBody))
 			.andExpect(status().isBadRequest())
-			.andExpect(content().string("Nome inválido"));
+			.andExpect(content().string("Nome invalido"));
 	}
 
+	@Test
 	void testNomeInvalidoSemCorpo() throws Exception {
 		String requestBody = "{ }";
 
@@ -65,9 +99,10 @@ class StartRouteTests {
 					.contentType(MediaType.APPLICATION_JSON)
 					.content(requestBody))
 			.andExpect(status().isBadRequest())
-			.andExpect(content().string("Nome inválido"));
+			.andExpect(content().string("Nome invalido"));
 	}
 
+	@Test
 	void testCandidatoDuplicado() throws Exception {
 		String requestBody = "{ \"nome\": \"Fulano de tal\" }";
 
@@ -81,6 +116,6 @@ class StartRouteTests {
 					.contentType(MediaType.APPLICATION_JSON)
 					.content(requestBody))
 			.andExpect(status().isBadRequest())
-			.andExpect(content().string("Candidato Duplicado"));
+			.andExpect(content().string("Candidato ja participa do processo."));
 	}
 }
