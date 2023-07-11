@@ -26,7 +26,7 @@ class StartRouteTests {
 
 	private ObjectMapper objectMapper = new ObjectMapper();
 
-	@BeforeEach
+	@AfterEach
 	void tearDown() throws Exception {
 		mockMvc.perform(
 			delete("/api/v1/hiring/reset"));

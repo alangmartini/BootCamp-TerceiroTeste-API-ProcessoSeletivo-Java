@@ -21,7 +21,7 @@ class ApproveRouteTests {
 	@Autowired
 	private MockMvc mockMvc;
 
-	@BeforeEach
+	@AfterEach
 	void tearDown() throws Exception {
 		mockMvc.perform(
 			delete("/api/v1/hiring/reset"));
