@@ -25,7 +25,7 @@ class AbsCandidatoTests {
         @Test
         public void initiallyNull() {
             Candidato candidato = new Candidato("John", 123);
-            assertNull(candidato.getFaseAtual());
+            assertEquals(candidato.getFaseAtual(), "Recebido");
         }
 
         @Test
