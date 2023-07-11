@@ -1,9 +1,7 @@
-# Processo Seletivo Manager
+# API - Processo Seletivo Manager
 
-Processo Seletivo Manager é um projeto simples em Java construído para manejar candidatos que estão em um processo de vários estágios. A aplicação
-validate o nomes, maneja o progresso através de várias fases e provê o status de cada candidato. O projeto utiliza
+API Processo Seletivo Manager é a implementação em formato API de um [projeto simples em Java](https://github.com/alangmartini/BootCamp-SegundoTeste-ProcessoSeletivo-Java) construído para manejar candidatos que estão em um processo de vários estágios. A aplicação valida os nomes, maneja o progresso através de várias fases e provê o status de cada candidato. O projeto utiliza
 principios SOLID para uma programação orientada a objetos, procurando focar em escalabilidade e qualidade de código.
-
 
 
 ## Getting Started
@@ -17,90 +15,201 @@ Para rodar, siga os passos abaixo:
 ### Installation
 
 1. Clone o repositório
-   ```sh
+   ````sh
    git clone https://github.com/your_username_/SegundoTeste.git
-   ```
+   ````
    
-2. Abra na IDE
+2. Instale as dependências  do maven
+````sh
+  mvn clean install
+````
 
-### Utilização
-Para utilizar o projeto, importe as seguintes classes:
+3. Inicialize o projeto
+````sh
+  mvn spring-boot:run
+````
 
-```java
-import segundoteste.candidatos.Candidato;
-import segundoteste.errors.;
-import segundoteste.fases.;
-import segundoteste.validators.nameValidator.*;
+## Endpoints
+
+### Iniciar Processo Seletivo
+*POST /api/v1/hiring/start*
+
+Inicia o processo com um novo candidato
+
+#### Request Body
+
+```
+{
+   "nome": "Fulano"
+}
 ```
 
-Crie uma instância da classe Segundo:
+#### Responses
 
-```java
-Segundo processManager = new Segundo();
+201 **OK**:
+```
+{
+   "codCandidato": 1
+}
 ```
 
-Agora você pode começar a utilizar os methods providos. Por exemplo, para iniciar o processo para um candidato:
-
-```java
-int candidateCode = processManager.iniciarProcesso("Candidate Name");
+400 **BAD REQUEST**:
+```
+Candidato ja participa do processo.
 ```
 
-Para marcar uma entrevista:
+### Marcar Entrevista
+*POST /api/v1/hiring/schedule*
 
-```java
-processManager.marcarEntrevista(candidateCode);
+Marca entrevista para um candidato
+
+#### Request Body
+
+```
+{
+   "codCandidato": integer
+}
 ```
 
-E para aprovar um candidato:
+#### Responses
 
-```java
-processManager.aprovarCandidato(candidateCode);
+200 **OK**:
+```
+{
+   "message": "Entrevista Marcada"
+}
 ```
 
-Você pode checkar o status do candidato com:
-
-```java
-String status = processManager.verificarStatusCandidato(candidateCode);
+400 **BAD REQUEST**
+```
+Candidato nao encontrado
 ```
 
-Para obter uma lista de todos os candidatos aprovados:
+### Desqualificar candidato
+*POST /api/v1/hiring/disqualify*
 
-```java
-List<String> approvedCandidates = processManager.obterAprovados();
+Desqualifica um candidato
+
+#### Request Body
+
+```
+{
+   "codCandidato": integer
+}
 ```
 
-### Classes Overview
+#### Responses
 
-Esse projeto possui as seguintes classes:
+200 **OK**:
+```
+{
+   "message": "Candidato Desqualificado"
+}
+```
 
-  - **Segundo** - A classe core, que implementa a interface**IProcessManager**. Maneja of processo de lidar coms os candidatos através das fases. Também utiliza **Validators** para checkar a conformidade dos nomes com determinados padrões.
-    
-  <br>
-  
-  - **AbsFase** - Classe base abstrata para diferentes fases do processo (**Recebidos**, **Qualificados**, **Aprovados**). Ela maneja os candidatos dentro de cada fase.
-    
-  <br>
-  
-  - **Candidato** - Representa a entidade Candidato. Contém informações sobre o candidato e sua fase atual.
+400 **BAD REQUEST**
+```
+   Candidato nao encontrado
+```
 
-  <br>
-  
-  - **Validator** and its implementations (**ValidatorNaoVazio**, **ValidatorCaracteres**, **ValidatorTamanho**) - Utiliza Chain
-      of Responsability para validar o nome do candidato.
-    
-  <br>
+### Aprovar candidato
+*POST /api/v1/hiring/approve*
 
-  - **Errors package** - Contém errors padrões para alguns cenários de erros frequentes na aplicação.
-  <br>
+Aprova um candidato
+
+#### Request Body
+
+```
+{
+   "codCandidato": integer
+}
+```
+
+#### Responses
+
+200 **OK**:
+```
+{
+   "message": "Candidato Aprovado"
+}
+```
+
+400 **BAD REQUEST**
+```
+Candidato nao encontrado
+```
+
+
+### Resetar Processo Seletivo
+*DELETE /api/v1/hiring/reset*
+
+Reseta o Processo Seletivo, limpando todos os candidatos de todas as fases.
+
+#### Responses
+
+200 **OK**:
+```
+{
+   "message": "Processo Resetado"
+}
+```
+
+### Get Status do Candidato
+*GET /api/v1/hiring/status/candidate/{id}*
+
+Requere o status  do candidato.
+
+#### Parameters
+
+id: integer (required) - Candidate ID.
+
+#### Responses
+
+200 **OK**:
+```
+{
+   "message": "Status: StatusDoCandido"
+}
+```
+
+400 **BAD REQUEST**
+```
+Candidato nao encontrado
+```
+
+### Get Approved Candidates
+*GET /api/v1/hiring/approved*
+
+Gets all approved candidates.
+
+#### Responses
+
+200 **OK**:
+```
+{
+"message": ["string1", "string2", ...]
+}
+```
+
+200 **OK**:
+```
+{
+"message": []
+}
+```
+
 
 ### Built With
 
   [Java](https://www.java.com/)
+  [Spring](https://spring.io/projects/spring-boot)
 
 ### Contact
 
 Alan Martini - [@linkedin](https://www.linkedin.com/in/alangmartini/) - gmartinialan@gmail.com
 
-Project Link: [https://github.com/alangmartini/BootCamp-SegundoTeste-ProcessoSeletivo-Java](https://github.com/alangmartini/BootCamp-SegundoTeste-ProcessoSeletivo-Java)
+Project Link: [https://github.com/alangmartini/BootCamp-TerceiroTeste-API-ProcessoSeletivo-Java](https://github.com/alangmartini/BootCamp-TerceiroTeste-API-ProcessoSeletivo-Java)
+
+Projeto do serviço do Processo Seletivo: [https://github.com/alangmartini/BootCamp-SegundoTeste-ProcessoSeletivo-Java](https://github.com/alangmartini/BootCamp-SegundoTeste-ProcessoSeletivo-Java)
 
 Todo e qualquer feedback é muito vindo!
