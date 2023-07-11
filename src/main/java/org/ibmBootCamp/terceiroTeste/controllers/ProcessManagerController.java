@@ -107,6 +107,15 @@ public class ProcessManagerController {
 		);
 	}
 
-//  @GetMapping("approved");
+  @GetMapping("approved")
+	public ResponseEntity<?> getApprovedCandidatos() {
+		ServiceResponse approvedCandidatosResponse =
+			processManagerService.getApprovedCandidatos();
+
+		return setResponse(
+			approvedCandidatosResponse.getMessage(),
+			approvedCandidatosResponse.getStatus()
+		);
+  }
 
 }

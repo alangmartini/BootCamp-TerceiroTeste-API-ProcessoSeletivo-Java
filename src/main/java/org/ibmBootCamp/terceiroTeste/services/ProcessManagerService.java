@@ -10,6 +10,7 @@ import segundoteste.Segundo;
 import segundoteste.errors.CandidatoNaoEncontrado;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -117,6 +118,20 @@ public class ProcessManagerService {
 				HttpStatus.OK
 			);
 		} catch (CandidatoNaoEncontrado e) {
+			return new ServiceResponse(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+	}
+
+	public ServiceResponse getApprovedCandidatos() {
+		try {
+			List<String> approvedCandidatos =
+				this.processManager.obterAprovados();
+
+			return new ServiceResponse(
+				approvedCandidatos,
+				HttpStatus.OK
+			);
+		} catch (Exception e) {
 			return new ServiceResponse(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
 	}

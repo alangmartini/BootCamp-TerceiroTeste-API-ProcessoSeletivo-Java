@@ -34,9 +34,9 @@ class GetApprovedRouteTests {
 		String requestBody = "{ \"nome\": \"Fulano de tal\" }";
 		String requestBodyCodCandidato = "{ \"codCandidato\": 1 }";
 
-		List<Candidato> mockApprovedCandidatos = new ArrayList<>();
+		List<String> mockApprovedCandidatos = new ArrayList<>();
 
-		mockApprovedCandidatos.add(new Candidato("Fulano de tal", 1));
+		mockApprovedCandidatos.add("Fulano de tal");
 
 		mockMvc.perform(
 			post("/api/v1/hiring/start")
@@ -66,10 +66,10 @@ class GetApprovedRouteTests {
 		String requestBodyCodCandidato = "{ \"codCandidato\": 1 }";
 		String requestBodyCodCandidato2 = "{ \"codCandidato\": 2 }";
 
-		List<Candidato> mockApprovedCandidatos = new ArrayList<>();
+		List<String> mockApprovedCandidatos = new ArrayList<>();
 
-		mockApprovedCandidatos.add(new Candidato("Fulano de tal", 1));
-		mockApprovedCandidatos.add(new Candidato("Beltrano de tal", 2));
+		mockApprovedCandidatos.add("Fulano de tal");
+		mockApprovedCandidatos.add("Beltrano de tal");
 
 		mockMvc.perform(
 			post("/api/v1/hiring/start")
@@ -104,9 +104,9 @@ class GetApprovedRouteTests {
 			.andExpect(content().string(objectMapper.writeValueAsString(mockApprovedCandidatos)));
 	}
 
+	@Test
 	void testSuccesfulEmpty() throws Exception {
 		List<Candidato> mockApprovedCandidatos = new ArrayList<>();
-
 
 		mockMvc.perform(
 				get("/api/v1/hiring/approved"))
