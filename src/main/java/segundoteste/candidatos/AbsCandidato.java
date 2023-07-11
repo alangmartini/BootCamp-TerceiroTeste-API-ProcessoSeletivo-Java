@@ -5,7 +5,7 @@ package segundoteste.candidatos;
  * Cada candidato tem um código único, um nome e uma fase atual em que se encontra.
  */
 public abstract class AbsCandidato {
-    private String faseAtual;
+    private String faseAtual = "Recebido";
     private int codCandidato;
     private String nome;
 
