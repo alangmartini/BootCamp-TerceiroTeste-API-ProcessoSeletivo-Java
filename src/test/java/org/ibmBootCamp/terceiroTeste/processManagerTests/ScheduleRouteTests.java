@@ -42,7 +42,8 @@ class ScheduleRouteTests {
 					.contentType(MediaType.APPLICATION_JSON)
 					.content(requestBodyCodCandidato))
 			.andExpect(status().isOk())
-			.andExpect(content().string("{message=Entrevista Marcada}"));
+			.andExpect(content().string("{\"message\":\"Entrevista " +
+				"Marcada\"}"));
 	}
 
 	@Test

@@ -41,7 +41,7 @@ class DisqualifyRouteTests {
 					.contentType(MediaType.APPLICATION_JSON)
 					.content(requestBodyCodCandidato))
 			.andExpect(status().isOk())
-			.andExpect(content().string("{message=Candidato Desqualificado}"));
+			.andExpect(content().string("{\"message\":\"Candidato Desqualificado\"}"));
 	}
 
 	@Test
@@ -64,7 +64,7 @@ class DisqualifyRouteTests {
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(requestBodyCodCandidato))
 			.andExpect(status().isOk())
-			.andExpect(content().string("{message=Candidato Desqualificado}"));
+			.andExpect(content().string("{\"message\":\"Candidato Desqualificado\"}"));
 	}
 
 	@Test
@@ -92,7 +92,7 @@ class DisqualifyRouteTests {
 					.contentType(MediaType.APPLICATION_JSON)
 					.content(requestBodyCodCandidato))
 			.andExpect(status().isOk())
-			.andExpect(content().string("{message=Candidato Desqualificado}"));
+			.andExpect(content().string("{\"message\":\"Candidato Desqualificado\"}"));
 	}
 
 	@Test

@@ -1,5 +1,6 @@
 package org.ibmBootCamp.terceiroTeste.controllers;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpStatus;
 
 /**
@@ -11,7 +12,9 @@ import org.springframework.http.HttpStatus;
  */
 public class ServiceResponse<T> {
 	private T bodyOrErrorMessage;
+	private String errorMessage;
 	private HttpStatus status;
+	private ObjectMapper objectMapper = new ObjectMapper();
 
 	/**
 	 * Inicializador.
@@ -23,8 +26,22 @@ public class ServiceResponse<T> {
 		this.status = status;
 	}
 
-	public T getMessage() {
-		return bodyOrErrorMessage;
+	public ServiceResponse(String errorMessage, HttpStatus status) {
+		this.errorMessage = errorMessage;
+		this.status = status;
+	}
+
+	public String getMessage() {
+		if (this.errorMessage != null) {
+
+			return this.errorMessage;
+		}
+
+		try {
+			return this.objectMapper.writeValueAsString(this.bodyOrErrorMessage);
+		} catch (Exception e) {
+			return "Failed to parse response";
+		}
 	}
 
 	public void setMessage(T message) {

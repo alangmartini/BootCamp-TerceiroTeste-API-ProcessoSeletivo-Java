@@ -39,7 +39,7 @@ class GetCandidatoRouteTests {
 		mockMvc.perform(
 				get("/api/v1/hiring/status/candidate/1"))
 			.andExpect(status().isOk())
-			.andExpect(content().string("{message=Status: Recebido}"));
+			.andExpect(content().string("{\"message\":\"Status: Recebido\"}"));
 	}
 
 	@Test
@@ -60,7 +60,7 @@ class GetCandidatoRouteTests {
 		mockMvc.perform(
 				get("/api/v1/hiring/status/candidate/1"))
 			.andExpect(status().isOk())
-			.andExpect(content().string("{message=Status: Qualificado}"));
+			.andExpect(content().string("{\"message\":\"Status: Qualificado\"}"));
 	}
 
 	@Test
@@ -86,7 +86,7 @@ class GetCandidatoRouteTests {
 		mockMvc.perform(
 				get("/api/v1/hiring/status/candidate/1"))
 			.andExpect(status().isOk())
-			.andExpect(content().string("{message=Status: Aprovado}"));
+			.andExpect(content().string("{\"message\":\"Status: Aprovado\"}"));
 	}
 
 	@Test

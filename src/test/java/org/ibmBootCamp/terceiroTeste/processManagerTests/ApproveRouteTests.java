@@ -44,7 +44,8 @@ class ApproveRouteTests {
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(requestBodyCodCandidato))
 			.andExpect(status().isOk())
-			.andExpect(content().string("{message=Candidato Aprovado}"));
+			.andExpect(content().string("{\"message\":\"Candidato " +
+				"Aprovado\"}"));
 	}
 
 	@Test

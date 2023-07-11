@@ -15,7 +15,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 
+/**
+ * Controller que maneja as routas para manipular o processo Seletivo.
+ * Você pode verificar o retorno de cada endpoint ao verificar o tipo de
+ * ReponseService.
+ */
 @RestController
 @RequestMapping("/api/v1/hiring")
 public class ProcessManagerController {
@@ -39,7 +45,7 @@ public class ProcessManagerController {
 	public ResponseEntity<?> iniciarProcesso(@RequestBody Pessoa pessoa) {
 	String nome = pessoa.getNome();
 
-	ServiceResponse iniciarProcessoResponse =
+	ServiceResponse<CodCandidatoHolder> iniciarProcessoResponse =
 		processManagerService.iniciarProcesso(nome);
 
 	return setResponse(
@@ -52,7 +58,8 @@ public class ProcessManagerController {
 	public ResponseEntity<?> marcarEntrevista(@RequestBody CodCandidatoHolder codCandidatoHolder) {
 		Integer codCandidato = codCandidatoHolder.getCodCandidato();
 
-		ServiceResponse scheduleInterviewResponse = processManagerService
+		// "Entrevista Marcada"
+		ServiceResponse<SucessfulMessage> scheduleInterviewResponse = processManagerService
 			.scheduleInterview(codCandidato);
 
 		return setResponse(
@@ -65,7 +72,8 @@ public class ProcessManagerController {
 	public ResponseEntity<?> desqualificarCandidato(@RequestBody CodCandidatoHolder codCandidatoHolder) {
 		Integer codCandidato = codCandidatoHolder.getCodCandidato();
 
-		ServiceResponse disqualifyResponse = processManagerService
+		// "Candidato Desqualificado"
+		ServiceResponse<SucessfulMessage> disqualifyResponse = processManagerService
 			.disqualifyCandidato(codCandidato);
 
 		return setResponse(
@@ -78,7 +86,8 @@ public class ProcessManagerController {
     public ResponseEntity<?> aprovarCandidato(@RequestBody CodCandidatoHolder codCandidatoHolder) {
 	    Integer codCandidato = codCandidatoHolder.getCodCandidato();
 
-	    ServiceResponse approveResponse = processManagerService
+		// Candidato Aprovado
+	    ServiceResponse<SucessfulMessage> approveResponse = processManagerService
 		    .approveCandidato(codCandidato);
 
 	    return setResponse(
@@ -89,8 +98,9 @@ public class ProcessManagerController {
 
 	@DeleteMapping("/reset")
 	public ResponseEntity<?> resetProcess() {
-		ServiceResponse resetResponse = processManagerService.reset();
+		ServiceResponse<SucessfulMessage> resetResponse = processManagerService.reset();
 
+		// Processo Reiniciado
 		return setResponse(
 			resetResponse.getMessage(),
 			resetResponse.getStatus()
@@ -99,17 +109,20 @@ public class ProcessManagerController {
 
 	@GetMapping ("/status/candidate/{id}")
 	public ResponseEntity<?> getCandidatoStatus(@PathVariable("id") int id) {
-		ServiceResponse resetResponse = processManagerService.getCandidatoStatus(id);
+		// Status: StatusDoCandidato
+		// ex: Status: Recebido
+		ServiceResponse<SucessfulMessage> candidatoStatusResponse =
+			processManagerService.getCandidatoStatus(id);
 
 		return setResponse(
-			resetResponse.getMessage(),
-			resetResponse.getStatus()
+			candidatoStatusResponse.getMessage(),
+			candidatoStatusResponse.getStatus()
 		);
 	}
 
   @GetMapping("approved")
 	public ResponseEntity<?> getApprovedCandidatos() {
-		ServiceResponse approvedCandidatosResponse =
+		ServiceResponse<List<String>> approvedCandidatosResponse =
 			processManagerService.getApprovedCandidatos();
 
 		return setResponse(
