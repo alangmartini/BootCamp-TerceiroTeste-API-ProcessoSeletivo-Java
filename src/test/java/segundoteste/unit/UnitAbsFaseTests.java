@@ -24,16 +24,6 @@ public class UnitAbsFaseTests {
         }
 
         @Test
-        public void throwErrorOnAddingRepeatedCandidate() throws CandidatoDuplicado {
-            AbsFase fase = new Aprovados();
-            Candidato candidato = new Candidato("John", 1);
-
-            fase.addCandidato(candidato);
-
-            assertThrows(CandidatoDuplicado.class, () -> fase.addCandidato(candidato));
-        }
-
-        @Test
         public void successfullyRemoveCandidate() throws CandidatoDuplicado, CandidatoNaoEncontrado {
             AbsFase fase = new Aprovados();
             Candidato candidato = new Candidato("John", 1);

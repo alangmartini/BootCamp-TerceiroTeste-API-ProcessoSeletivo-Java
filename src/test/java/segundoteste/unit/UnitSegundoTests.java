@@ -160,6 +160,35 @@ class UnitSegundoTests {
         }
     }
 
+	@Nested
+	class testEncontrarCandidateEmFasesPorNome {
+		@Test
+		public void successfullyFindsCandidate() throws CandidatoDuplicado, NomeInvalido, CandidatoNaoEncontrado {
+			Segundo segundo = new Segundo();
+			String nome = "John";
+			int codCandidato = segundo.iniciarProcesso(nome);
+
+			Candidato candidato = segundo.encontrarCandidatoPorNome(nome);
+			assertEquals(candidato.getFaseAtual(), "Recebidos");
+
+			segundo.marcarEntrevista(codCandidato);
+			Candidato candidatoEntrevista =
+				segundo.encontrarCandidatoPorNome(nome);
+			assertEquals(candidatoEntrevista.getFaseAtual(), "Qualificados");
+
+			segundo.aprovarCandidato(codCandidato);
+			Candidato candidatoAprovado =
+				segundo.encontrarCandidatoPorNome(nome);
+			assertEquals(candidatoAprovado.getFaseAtual(), "Aprovados");
+		}
+
+		@Test
+		public void throwsErrorOnNonExistentCandidate() {
+			Segundo segundo = new Segundo();
+			assertNull(segundo.encontrarCandidatoPorNome("John"));
+		}
+	}
+
     @Nested
     class testVerificarStatusCandidato {
         @Test
@@ -178,6 +207,24 @@ class UnitSegundoTests {
             status = segundo.verificarStatusCandidato(codCandidato);
             assertEquals(status, "Aprovado");
         }
+
+		@Test
+	    public void succesfullyHandlesSchar() throws CandidatoDuplicado,
+		    NomeInvalido,
+		    CandidatoNaoEncontrado {
+		    Segundo segundo = new Segundo();
+		    int codCandidato = segundo.iniciarProcesso("John");
+			Candidato candidato =
+				segundo.encontrarCandidateEmFases(codCandidato);
+
+			candidato.setFaseAtual("Recebidos");
+		    String status = segundo.verificarStatusCandidato(codCandidato);
+		    assertEquals(status, "Recebido");
+
+		    candidato.setFaseAtual("Recebido");
+		    status = segundo.verificarStatusCandidato(codCandidato);
+		    assertEquals(status, "Recebido");
+	    }
 
         @Test
         public void throwsErrorOnNonExistentCandidate() {

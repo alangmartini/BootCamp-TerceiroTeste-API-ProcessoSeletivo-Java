@@ -1,8 +1,7 @@
 package org.ibmBootCamp.terceiroTeste.services;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.ibmBootCamp.terceiroTeste.controllers.ServiceResponse;
-import org.ibmBootCamp.terceiroTeste.controllers.SucessfulMessage;
+import org.ibmBootCamp.terceiroTeste.controllers.succesfulMessages.SucessfulMessage;
 import org.ibmBootCamp.terceiroTeste.entities.codCandidatoHolder.CodCandidatoHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
