@@ -49,7 +49,6 @@ public abstract class AbsFase implements IFase {
         return candidate;
     }
 
-
     public Candidato getCandidatoByNome(String nome) throws CandidatoNaoEncontrado {
         Candidato candidate = candidatos.stream()
               .filter(candidato -> candidato.getNome().equals(nome))
@@ -67,18 +66,6 @@ public abstract class AbsFase implements IFase {
      */
     @Override
     public void addCandidato(Candidato novoCandidato) throws CandidatoDuplicado {
-        boolean isExistente = candidatos
-                .stream()
-                .anyMatch(
-                        candidato -> (
-                                candidato.getCodCandidato() == novoCandidato.getCodCandidato()
-                                        || candidato.getNome() == novoCandidato.getNome()
-                        ));
-
-        if (isExistente) {
-            throw new CandidatoDuplicado();
-        }
-
         novoCandidato.setFaseAtual(this.getClass().getSimpleName());
         candidatos.add(novoCandidato);
     }

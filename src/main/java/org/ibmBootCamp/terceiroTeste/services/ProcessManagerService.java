@@ -1,14 +1,15 @@
 package org.ibmBootCamp.terceiroTeste.services;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.ibmBootCamp.terceiroTeste.controllers.ServiceResponse;
-import org.ibmBootCamp.terceiroTeste.controllers.SucessfulMessage;
+import org.ibmBootCamp.terceiroTeste.errors.ApiCandidatoDuplicado;
+import org.ibmBootCamp.terceiroTeste.errors.ApiCandidatoNaoEncontrado;
+import org.ibmBootCamp.terceiroTeste.errors.ApiNomeInvalido;
 import org.ibmBootCamp.terceiroTeste.entities.codCandidatoHolder.CodCandidatoHolder;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import segundoteste.IProcessManager;
 import segundoteste.Segundo;
+import segundoteste.errors.CandidatoDuplicado;
 import segundoteste.errors.CandidatoNaoEncontrado;
+import segundoteste.errors.NomeInvalido;
 
 import java.util.HashMap;
 import java.util.List;
@@ -25,105 +26,68 @@ public class ProcessManagerService {
 		return responseBody;
 	}
 
-	public ServiceResponse<CodCandidatoHolder> iniciarProcesso(String name) {
+	public CodCandidatoHolder iniciarProcesso(String name) throws
+		ApiCandidatoDuplicado, ApiNomeInvalido {
 		try {
 			int codCandidato = this.processManager.iniciarProcesso(name);
 
 			CodCandidatoHolder codCandidatoHolder =
 				new CodCandidatoHolder(codCandidato);
 
-			return new ServiceResponse<>(codCandidatoHolder, HttpStatus.CREATED);
-		} catch (Exception e) {
-			return new ServiceResponse<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+			return codCandidatoHolder;
+		} catch (NomeInvalido e) {
+			throw new ApiNomeInvalido();
+		} catch (CandidatoDuplicado e) {
+			throw new ApiCandidatoDuplicado();
 		}
 	}
 
-	public ServiceResponse<SucessfulMessage> scheduleInterview(Integer codCandidato) {
+	public void scheduleInterview(Integer codCandidato) {
 		try {
 			this.processManager.marcarEntrevista(codCandidato);
-
-			SucessfulMessage responseBody = new SucessfulMessage("Entrevista " +
-				"Marcada");
-
-			return new ServiceResponse<>(
-				responseBody,
-				HttpStatus.OK);
 		} catch (CandidatoNaoEncontrado e) {
-			return new ServiceResponse<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+			throw new ApiCandidatoNaoEncontrado();
 		}
 	}
 
 
-	public ServiceResponse<SucessfulMessage> disqualifyCandidato(Integer codCandidato) {
+	public void disqualifyCandidato(Integer codCandidato) {
 		try {
 			this.processManager.desqualificarCandidato(codCandidato);
-
-			SucessfulMessage responseBody = new SucessfulMessage("Candidato " +
-				"Desqualificado");
-
-			return new ServiceResponse<>(
-				responseBody,
-				HttpStatus.OK);
 		} catch (CandidatoNaoEncontrado e) {
-			return new ServiceResponse<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+			throw new ApiCandidatoNaoEncontrado();
 		}
 	}
 
-	public ServiceResponse<SucessfulMessage> approveCandidato(Integer codCandidato) {
+	public void approveCandidato(Integer codCandidato) {
 		try {
 			this.processManager.aprovarCandidato(codCandidato);
-
-			SucessfulMessage responseBody = new SucessfulMessage("Candidato " +
-				"Aprovado");
-
-			return new ServiceResponse<>(
-				responseBody,
-				HttpStatus.OK);
 		} catch (CandidatoNaoEncontrado e) {
-			return new ServiceResponse<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+			throw new ApiCandidatoNaoEncontrado();
 		}
 	}
 
-	public ServiceResponse<SucessfulMessage> reset() {
+	public void reset() {
 		this.processManager.reset();
 		this.processManager = new Segundo();
-
-		SucessfulMessage responseBody =
-			new SucessfulMessage("Processo Reiniciado");
-
-		return new ServiceResponse<>(
-			responseBody,
-			HttpStatus.OK);
 	}
 
-	public ServiceResponse<SucessfulMessage> getCandidatoStatus(int id) {
+	public String getCandidatoStatus(int id) {
 		try {
 			String statusCandidato =
 				this.processManager.verificarStatusCandidato(id);
 
-			SucessfulMessage responseBody =
-				new SucessfulMessage("Status: " + statusCandidato);
-
-			return new ServiceResponse<>(
-				responseBody,
-				HttpStatus.OK
-			);
+			return statusCandidato;
 		} catch (CandidatoNaoEncontrado e) {
-			return new ServiceResponse<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+			throw new ApiCandidatoNaoEncontrado();
 		}
 	}
 
-	public ServiceResponse<List<String>> getApprovedCandidatos() {
-		try {
-			List<String> approvedCandidatos =
-				this.processManager.obterAprovados();
+	public List<String> getApprovedCandidatos() {
 
-			return new ServiceResponse(
-				approvedCandidatos,
-				HttpStatus.OK
-			);
-		} catch (Exception e) {
-			return new ServiceResponse<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-		}
+		List<String> approvedCandidatos =
+			this.processManager.obterAprovados();
+
+		return approvedCandidatos;
 	}
 }

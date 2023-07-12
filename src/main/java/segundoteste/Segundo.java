@@ -32,13 +32,9 @@ public class Segundo implements IProcessManager {
      * Construtor, inicializa os tres estágios do process: Recebidos, Qualificados, Aprovados.
      */
     public Segundo() {
-        try {
-            this.recebidos = new Recebidos();
-            this.qualificados = new Qualificados();
-            this.aprovados = new Aprovados();
-        } catch (Exception e) {
-            System.out.println("Erro ao instanciar Fases do Processo");
-        }
+        this.recebidos = new Recebidos();
+        this.qualificados = new Qualificados();
+        this.aprovados = new Aprovados();
     }
 
 	public void reset() {
@@ -129,9 +125,8 @@ public class Segundo implements IProcessManager {
         for (AbsFase fase : AbsFase.fasesInstanciadas.values()) {
             try {
                 Candidato candidato = fase.getCandidato(codCandidato);
-                if (candidato != null) {
-                    candidatoEncontrado =  candidato;
-                }
+
+                candidatoEncontrado =  candidato;
             } catch (CandidatoNaoEncontrado e) {}
         }
 
@@ -154,12 +149,10 @@ public class Segundo implements IProcessManager {
         for (AbsFase fase : AbsFase.fasesInstanciadas.values()) {
             try {
                 Candidato candidato = fase.getCandidatoByNome(nome);
-                if (candidato != null) {
-                    candidatoEncontrado =  candidato;
-                }
+
+                candidatoEncontrado =  candidato;
             } catch (CandidatoNaoEncontrado e) {}
         }
-
 
         return candidatoEncontrado;
     }
@@ -172,14 +165,12 @@ public class Segundo implements IProcessManager {
      */
     public String verificarStatusCandidato(int codCandidato) throws CandidatoNaoEncontrado {
         Candidato candidato = encontrarCandidateEmFases(codCandidato);
-
         String faseAtual = candidato.getFaseAtual();
         String faseAtualTrimmed = faseAtual;
 
         if (faseAtual.endsWith("s")) {
             faseAtualTrimmed = faseAtual.substring(0, faseAtual.length() - 1);
         }
-
 
         return faseAtualTrimmed;
     }

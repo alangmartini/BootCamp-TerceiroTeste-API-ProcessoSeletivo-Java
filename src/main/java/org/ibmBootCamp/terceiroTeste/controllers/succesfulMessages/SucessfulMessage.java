@@ -1,4 +1,4 @@
-package org.ibmBootCamp.terceiroTeste.controllers;
+package org.ibmBootCamp.terceiroTeste.controllers.succesfulMessages;
 
 public class SucessfulMessage {
 	private String message;

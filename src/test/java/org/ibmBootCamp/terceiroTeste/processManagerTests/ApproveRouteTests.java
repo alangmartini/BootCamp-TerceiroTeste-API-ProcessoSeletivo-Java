@@ -1,5 +1,7 @@
 package org.ibmBootCamp.terceiroTeste.processManagerTests;
 
+	import com.fasterxml.jackson.databind.ser.Serializers;
+	import org.ibmBootCamp.terceiroTeste.processManagerTests.expectedMessages.ErrorMessages;
 	import org.junit.jupiter.api.AfterEach;
 	import org.junit.jupiter.api.BeforeEach;
 	import org.junit.jupiter.api.Test;
@@ -14,10 +16,7 @@ package org.ibmBootCamp.terceiroTeste.processManagerTests;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class ApproveRouteTests {
-	@Autowired
-	private MockMvc mockMvc;
-
+class ApproveRouteTests extends BaseControllerTest {
 	@AfterEach
 	void tearDown() throws Exception {
 		mockMvc.perform(
@@ -26,18 +25,12 @@ class ApproveRouteTests {
 
 	@Test
 	void testSuccesful() throws Exception {
-		String requestBody = "{ \"nome\": \"Fulano de tal\" }";
-		String requestBodyCodCandidato = "{ \"codCandidato\": 1 }";
+		String requestBodyPessoa = this.createPessoaRequestBody();
+		String requestBodyCodCandidato =
+			this.createCodCandidatoHolderRequestBody();
 
-		mockMvc.perform(
-			post("/api/v1/hiring/start")
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(requestBody));
-
-		mockMvc.perform(
-				post("/api/v1/hiring/schedule")
-					.contentType(MediaType.APPLICATION_JSON)
-					.content(requestBodyCodCandidato));
+		this.startProcess(requestBodyPessoa);
+		this.scheduleInterview(requestBodyCodCandidato);
 
 		mockMvc.perform(
 			post("/api/v1/hiring/approve")
@@ -50,10 +43,11 @@ class ApproveRouteTests {
 
 	@Test
 	void testCandidatoNaoEncontrado() throws Exception {
-		String requestBody = "{ \"nome\": \"Fulano de tal\" }";
-		String requestBodyCodCandidato = "{ \"codCandidato\": 1 }";
-		String requestBodyCodCandidatoNaoEncontrado = "{ \"codCandidato\": 10" +
-			" }";
+		String requestBody = this.createPessoaRequestBody();
+		String requestBodyCodCandidato =
+			this.createCodCandidatoHolderRequestBody();
+		String requestBodyCodCandidatoNaoEncontrado =
+			this.createCodCandidatoHolderRequestBody(10);
 
 		mockMvc.perform(
 			post("/api/v1/hiring/start")
@@ -70,6 +64,6 @@ class ApproveRouteTests {
 					.contentType(MediaType.APPLICATION_JSON)
 					.content(requestBodyCodCandidatoNaoEncontrado))
 			.andExpect(status().isBadRequest())
-			.andExpect(content().string("Candidato nao encontrado"));
+			.andExpect(content().string(ErrorMessages.CANDIDATO_NAO_ENCONTRADO));
 	}
 }

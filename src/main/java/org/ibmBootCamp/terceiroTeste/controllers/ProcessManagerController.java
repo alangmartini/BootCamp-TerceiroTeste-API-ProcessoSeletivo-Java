@@ -1,9 +1,14 @@
 package org.ibmBootCamp.terceiroTeste.controllers;
 
-import org.apache.coyote.Response;
+import org.ibmBootCamp.terceiroTeste.DTO.ApprovedResponse;
+import org.ibmBootCamp.terceiroTeste.DTO.DatalessResponse;
+import org.ibmBootCamp.terceiroTeste.DTO.StartProcessResponse;
+import org.ibmBootCamp.terceiroTeste.DTO.StatusCandidateIdResponse;
+import org.ibmBootCamp.terceiroTeste.entities.CandidatoStatusHolder;
 import org.ibmBootCamp.terceiroTeste.entities.codCandidatoHolder.CodCandidatoHolder;
 import org.ibmBootCamp.terceiroTeste.entities.pessoa.Pessoa;
 import org.ibmBootCamp.terceiroTeste.services.ProcessManagerService;
+import org.ibmBootCamp.terceiroTeste.util.IMessageProvider;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -25,10 +30,15 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/hiring")
 public class ProcessManagerController {
-  private final ProcessManagerService processManagerService;
+    private final ProcessManagerService processManagerService;
+	private final IMessageProvider messageProvider;
 
-	public ProcessManagerController(ProcessManagerService processManagerService) {
+	public ProcessManagerController(
+		ProcessManagerService processManagerService,
+		IMessageProvider messageProvider
+	) {
 		this.processManagerService = processManagerService;
+		this.messageProvider = messageProvider;
 	}
 
 	public <T> ResponseEntity<T> setResponse(
@@ -42,93 +52,121 @@ public class ProcessManagerController {
 	}
 
 	@PostMapping("/start")
-	public ResponseEntity<?> iniciarProcesso(@RequestBody Pessoa pessoa) {
-	String nome = pessoa.getNome();
+	public ResponseEntity<StartProcessResponse> iniciarProcesso(@RequestBody Pessoa pessoa) {
+		String nome = pessoa.getNome();
 
-	ServiceResponse<CodCandidatoHolder> iniciarProcessoResponse =
-		processManagerService.iniciarProcesso(nome);
+		CodCandidatoHolder codCandidatoHolder =
+			processManagerService.iniciarProcesso(nome);
 
-	return setResponse(
-			iniciarProcessoResponse.getMessage(),
-			iniciarProcessoResponse.getStatus()
+		StartProcessResponse responseBody = new StartProcessResponse(
+			codCandidatoHolder,
+			this.messageProvider.getMessage("start.success")
 		);
+
+		return ResponseEntity
+			.status(HttpStatus.CREATED)
+			.contentType((MediaType.APPLICATION_JSON))
+			.body(responseBody);
 	}
 
     @PostMapping("/schedule")
 	public ResponseEntity<?> marcarEntrevista(@RequestBody CodCandidatoHolder codCandidatoHolder) {
 		Integer codCandidato = codCandidatoHolder.getCodCandidato();
 
-		// "Entrevista Marcada"
-		ServiceResponse<SucessfulMessage> scheduleInterviewResponse = processManagerService
+		processManagerService
 			.scheduleInterview(codCandidato);
 
-		return setResponse(
-			scheduleInterviewResponse.getMessage(),
-			scheduleInterviewResponse.getStatus()
-		);
+	    DatalessResponse responseBody = new DatalessResponse(
+		    this.messageProvider.getMessage("schedule.success")
+	    );
+
+	    return ResponseEntity
+		    .status(HttpStatus.CREATED)
+		    .contentType((MediaType.APPLICATION_JSON))
+		    .body(responseBody);
 	}
 
 	@PostMapping("/disqualify")
 	public ResponseEntity<?> desqualificarCandidato(@RequestBody CodCandidatoHolder codCandidatoHolder) {
 		Integer codCandidato = codCandidatoHolder.getCodCandidato();
 
-		// "Candidato Desqualificado"
-		ServiceResponse<SucessfulMessage> disqualifyResponse = processManagerService
+		processManagerService
 			.disqualifyCandidato(codCandidato);
 
-		return setResponse(
-			disqualifyResponse.getMessage(),
-			disqualifyResponse.getStatus()
+		DatalessResponse responseBody = new DatalessResponse(
+			this.messageProvider.getMessage("disqualify.success")
 		);
+
+		return ResponseEntity
+			.status(HttpStatus.CREATED)
+			.contentType((MediaType.APPLICATION_JSON))
+			.body(responseBody);
 	}
 
     @PostMapping("/approve")
-    public ResponseEntity<?> aprovarCandidato(@RequestBody CodCandidatoHolder codCandidatoHolder) {
+    public ResponseEntity<DatalessResponse> aprovarCandidato(@RequestBody CodCandidatoHolder codCandidatoHolder) {
 	    Integer codCandidato = codCandidatoHolder.getCodCandidato();
 
-		// Candidato Aprovado
-	    ServiceResponse<SucessfulMessage> approveResponse = processManagerService
-		    .approveCandidato(codCandidato);
+	    processManagerService.approveCandidato(codCandidato);
 
-	    return setResponse(
-		    approveResponse.getMessage(),
-		    approveResponse.getStatus()
+	    DatalessResponse responseBody = new DatalessResponse(
+		    this.messageProvider.getMessage("approve.success")
 	    );
+
+	    return ResponseEntity
+		    .status(HttpStatus.CREATED)
+		    .contentType((MediaType.APPLICATION_JSON))
+		    .body(responseBody);
     }
 
 	@DeleteMapping("/reset")
 	public ResponseEntity<?> resetProcess() {
-		ServiceResponse<SucessfulMessage> resetResponse = processManagerService.reset();
+		processManagerService.reset();
+
+		DatalessResponse responseBody = new DatalessResponse(
+			this.messageProvider.getMessage("reset.success")
+		);
 
 		// Processo Reiniciado
-		return setResponse(
-			resetResponse.getMessage(),
-			resetResponse.getStatus()
-		);
+		return ResponseEntity
+			.status(HttpStatus.CREATED)
+			.contentType((MediaType.APPLICATION_JSON))
+			.body(responseBody);
 	}
 
 	@GetMapping ("/status/candidate/{id}")
 	public ResponseEntity<?> getCandidatoStatus(@PathVariable("id") int id) {
-		// Status: StatusDoCandidato
-		// ex: Status: Recebido
-		ServiceResponse<SucessfulMessage> candidatoStatusResponse =
+		String candidatoStatus =
 			processManagerService.getCandidatoStatus(id);
 
-		return setResponse(
-			candidatoStatusResponse.getMessage(),
-			candidatoStatusResponse.getStatus()
+		CandidatoStatusHolder statusHolder =
+			new CandidatoStatusHolder(candidatoStatus);
+
+		StatusCandidateIdResponse responseBody = new StatusCandidateIdResponse(
+			statusHolder,
+			this.messageProvider.getMessage("status.candidate.id.sucess", candidatoStatus)
 		);
+
+		return ResponseEntity
+			.status(HttpStatus.CREATED)
+			.contentType((MediaType.APPLICATION_JSON))
+			.body(responseBody);
 	}
 
   @GetMapping("approved")
 	public ResponseEntity<?> getApprovedCandidatos() {
-		ServiceResponse<List<String>> approvedCandidatosResponse =
+		List<String> approvedCandidatos =
 			processManagerService.getApprovedCandidatos();
 
-		return setResponse(
-			approvedCandidatosResponse.getMessage(),
-			approvedCandidatosResponse.getStatus()
-		);
+	  ApprovedResponse responseBody = new ApprovedResponse(
+		  approvedCandidatos,
+		  this.messageProvider.getMessage("approved.success")
+	  );
+
+	  return ResponseEntity
+		  .status(HttpStatus.CREATED)
+		  .contentType((MediaType.APPLICATION_JSON))
+		  .body(responseBody);
   }
 
 }
