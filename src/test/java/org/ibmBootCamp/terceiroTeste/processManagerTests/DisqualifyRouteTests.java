@@ -1,5 +1,6 @@
 package org.ibmBootCamp.terceiroTeste.processManagerTests;
 
+	import org.ibmBootCamp.terceiroTeste.entities.pessoa.Pessoa;
 	import org.junit.jupiter.api.AfterEach;
 	import org.junit.jupiter.api.Test;
 	import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,7 @@ package org.ibmBootCamp.terceiroTeste.processManagerTests;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class DisqualifyRouteTests {
+class DisqualifyRouteTests extends BaseControllerTest {
 	@Autowired
 	private MockMvc mockMvc;
 
@@ -28,7 +29,7 @@ class DisqualifyRouteTests {
 
 	@Test
 	void testSuccesfulCandidatoRecebido() throws Exception {
-		String requestBody = "{ \"nome\": \"Fulano de tal\" }";
+		String requestBody = this.createPessoaRequestBody();
 		String requestBodyCodCandidato = "{ \"codCandidato\": 1 }";
 
 		mockMvc.perform(
