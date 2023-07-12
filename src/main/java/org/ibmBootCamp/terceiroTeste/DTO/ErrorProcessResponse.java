@@ -1,15 +1,15 @@
 package org.ibmBootCamp.terceiroTeste.DTO;
 
 public class ErrorProcessResponse implements IProcessResponse {
-	private final Exception data;
+	private final String data;
 	private final String message;
 
-	public ErrorProcessResponse(Exception data, String message) {
-		this.data = data;
+	public ErrorProcessResponse(String message) {
+		this.data = "";
 		this.message = message;
 	}
 
-	public Exception getData() {
+	public String getData() {
 		return this.data;
 	}
 

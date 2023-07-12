@@ -37,8 +37,6 @@ public class ProcessManagerService {
 				new CodCandidatoHolder(codCandidato);
 
 			return codCandidatoHolder;
-		} catch (CandidatoNaoEncontrado e) {
-			throw new ApiCandidatoDuplicado();
 		} catch (NomeInvalido e) {
 			throw new ApiNomeInvalido();
 		} catch (CandidatoDuplicado e) {
