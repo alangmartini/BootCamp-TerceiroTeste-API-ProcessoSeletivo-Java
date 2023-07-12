@@ -53,4 +53,36 @@ abstract  public class BaseControllerTest {
 		mockMvc.perform(
 			delete("/api/v1/hiring/reset"));
 	}
+
+	public String createPessoaRequestBody() throws Exception {
+		Pessoa pessoa = new Pessoa("Fulano de tal");
+
+		String requestBody = this.objectMapper.writeValueAsString(pessoa);
+
+		return requestBody;
+	}
+
+	public String createPessoaRequestBody(String nome) throws Exception {
+		Pessoa pessoa = new Pessoa();
+
+		String requestBody = this.objectMapper.writeValueAsString(pessoa);
+
+		return requestBody;
+	}
+
+	public String createCodCandidatoHolderRequestBody(Integer codCandidato) throws Exception {
+		CodCandidatoHolder codCandidatoHolder = new CodCandidatoHolder(codCandidato);
+
+		String requestBody = this.objectMapper.writeValueAsString(codCandidatoHolder);
+
+		return requestBody;
+	}
+
+	public String createCodCandidatoHolderRequestBody() throws Exception {
+		CodCandidatoHolder codCandidatoHolder = new CodCandidatoHolder();
+
+		String requestBody = this.objectMapper.writeValueAsString(codCandidatoHolder);
+
+		return requestBody;
+	}
 }
