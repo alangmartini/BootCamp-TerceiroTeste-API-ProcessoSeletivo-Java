@@ -1,9 +1,9 @@
-package org.ibmBootCamp.terceiroTeste.Errors;
+package org.ibmBootCamp.terceiroTeste.errors;
 
 import org.springframework.http.HttpStatus;
-import segundoteste.errors.NomeInvalido;
+import segundoteste.errors.CandidatoDuplicado;
 
-public class ApiNomeInvalido extends NomeInvalido {
+public class ApiCandidatoDuplicado extends CandidatoDuplicado {
 	private final HttpStatus errorCode = HttpStatus.BAD_REQUEST;
 
 	public HttpStatus getErrorCode() {

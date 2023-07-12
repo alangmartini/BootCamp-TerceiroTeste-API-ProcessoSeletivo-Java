@@ -1,4 +1,4 @@
-package org.ibmBootCamp.terceiroTeste.Errors;
+package org.ibmBootCamp.terceiroTeste.errors;
 
 import org.springframework.http.HttpStatus;
 

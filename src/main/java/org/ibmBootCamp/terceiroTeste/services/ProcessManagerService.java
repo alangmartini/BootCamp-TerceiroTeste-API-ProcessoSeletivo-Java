@@ -1,7 +1,7 @@
 package org.ibmBootCamp.terceiroTeste.services;
 
-import org.ibmBootCamp.terceiroTeste.Errors.ApiCandidatoDuplicado;
-import org.ibmBootCamp.terceiroTeste.Errors.ApiNomeInvalido;
+import org.ibmBootCamp.terceiroTeste.errors.ApiCandidatoDuplicado;
+import org.ibmBootCamp.terceiroTeste.errors.ApiNomeInvalido;
 import org.ibmBootCamp.terceiroTeste.controllers.ServiceResponse;
 import org.ibmBootCamp.terceiroTeste.controllers.succesfulMessages.SucessfulMessage;
 import org.ibmBootCamp.terceiroTeste.entities.codCandidatoHolder.CodCandidatoHolder;
@@ -41,6 +41,8 @@ public class ProcessManagerService {
 			throw new ApiCandidatoDuplicado();
 		} catch (NomeInvalido e) {
 			throw new ApiNomeInvalido();
+		} catch (CandidatoDuplicado e) {
+			throw new ApiCandidatoDuplicado();
 		}
 	}
 

@@ -65,7 +65,6 @@ public class ProcessManagerController {
 			.status(HttpStatus.CREATED)
 			.contentType((MediaType.APPLICATION_JSON))
 			.body(responseBody);
-
 	}
 
     @PostMapping("/schedule")
