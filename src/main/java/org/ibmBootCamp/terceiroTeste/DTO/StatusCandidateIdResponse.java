@@ -6,7 +6,7 @@ import org.ibmBootCamp.terceiroTeste.entities.CandidatoStatusHolder;
 
 @Getter
 @Setter
-public class StatusCandidateIdResponse implements  IProcessResponse<String> {
+public class StatusCandidateIdResponse implements  IProcessResponse<CandidatoStatusHolder> {
 	private CandidatoStatusHolder data;
 	private String message;
 

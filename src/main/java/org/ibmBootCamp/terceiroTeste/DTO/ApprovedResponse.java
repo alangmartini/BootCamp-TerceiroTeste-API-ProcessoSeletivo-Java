@@ -8,7 +8,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class ApprovedResponse implements  IProcessResponse<String> {
+public class ApprovedResponse implements  IProcessResponse<List<String>> {
 	private List<String> data;
 	private String message;
 
