@@ -10,6 +10,7 @@ import org.ibmBootCamp.terceiroTeste.util.IMessageProvider;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,6 +28,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/api/v1/hiring")
+@CrossOrigin (origins = "*", allowedHeaders = "*")
 public class ProcessManagerController {
     private final ProcessManagerService processManagerService;
 	private final IMessageProvider messageProvider;
