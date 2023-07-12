@@ -54,20 +54,6 @@ public class GlobalExceptionHandler {
 		);
 	}
 
-	@ExceptionHandler(value = { ApiNomeInvalido.class })
-	public ResponseEntity<Object> handleApiErrors (
-		ApiNomeInvalido e
-	) {
-		ErrorProcessResponse errorBody = new ErrorProcessResponse(
-			e.getMessage()
-		);
-
-		return new ResponseEntity<>(
-			errorBody,
-			e.getErrorCode()
-		);
-	}
-
 	@ExceptionHandler(value = { Exception.class })
 	public ResponseEntity<Object> handleException(Exception e) {
 		return new ResponseEntity<>(
