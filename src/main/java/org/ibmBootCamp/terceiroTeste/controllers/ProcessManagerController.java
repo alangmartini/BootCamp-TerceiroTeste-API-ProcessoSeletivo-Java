@@ -1,9 +1,12 @@
 package org.ibmBootCamp.terceiroTeste.controllers;
 
+import org.ibmBootCamp.terceiroTeste.DTO.IProcessResponse;
+import org.ibmBootCamp.terceiroTeste.DTO.StartProcessResponse;
 import org.ibmBootCamp.terceiroTeste.controllers.succesfulMessages.SucessfulMessage;
 import org.ibmBootCamp.terceiroTeste.entities.codCandidatoHolder.CodCandidatoHolder;
 import org.ibmBootCamp.terceiroTeste.entities.pessoa.Pessoa;
 import org.ibmBootCamp.terceiroTeste.services.ProcessManagerService;
+import org.ibmBootCamp.terceiroTeste.util.IMessageProvider;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -26,9 +29,14 @@ import java.util.List;
 @RequestMapping("/api/v1/hiring")
 public class ProcessManagerController {
     private final ProcessManagerService processManagerService;
+	private final IMessageProvider messageProvider;
 
-	public ProcessManagerController(ProcessManagerService processManagerService) {
+	public ProcessManagerController(
+		ProcessManagerService processManagerService,
+		IMessageProvider messageProvider
+	) {
 		this.processManagerService = processManagerService;
+		this.messageProvider = messageProvider;
 	}
 
 	public <T> ResponseEntity<T> setResponse(
@@ -42,16 +50,22 @@ public class ProcessManagerController {
 	}
 
 	@PostMapping("/start")
-	public ResponseEntity<?> iniciarProcesso(@RequestBody Pessoa pessoa) {
-	String nome = pessoa.getNome();
+	public ResponseEntity<IProcessResponse> iniciarProcesso(@RequestBody Pessoa pessoa) {
+		String nome = pessoa.getNome();
 
-	ServiceResponse<CodCandidatoHolder> iniciarProcessoResponse =
-		processManagerService.iniciarProcesso(nome);
+		CodCandidatoHolder codCandidatoHolder =
+			processManagerService.iniciarProcesso(nome);
 
-	return setResponse(
-			iniciarProcessoResponse.getMessage(),
-			iniciarProcessoResponse.getStatus()
+		StartProcessResponse responseBody = new StartProcessResponse(
+			codCandidatoHolder,
+			this.messageProvider.getMessage("start.success")
 		);
+
+		return ResponseEntity
+			.status(HttpStatus.CREATED)
+			.contentType((MediaType.APPLICATION_JSON))
+			.body(responseBody);
+
 	}
 
     @PostMapping("/schedule")

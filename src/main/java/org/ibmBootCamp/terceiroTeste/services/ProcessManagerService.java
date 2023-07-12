@@ -1,5 +1,7 @@
 package org.ibmBootCamp.terceiroTeste.services;
 
+import org.ibmBootCamp.terceiroTeste.Errors.ApiCandidatoDuplicado;
+import org.ibmBootCamp.terceiroTeste.Errors.ApiNomeInvalido;
 import org.ibmBootCamp.terceiroTeste.controllers.ServiceResponse;
 import org.ibmBootCamp.terceiroTeste.controllers.succesfulMessages.SucessfulMessage;
 import org.ibmBootCamp.terceiroTeste.entities.codCandidatoHolder.CodCandidatoHolder;
@@ -7,7 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import segundoteste.IProcessManager;
 import segundoteste.Segundo;
+import segundoteste.errors.CandidatoDuplicado;
 import segundoteste.errors.CandidatoNaoEncontrado;
+import segundoteste.errors.NomeInvalido;
 
 import java.util.HashMap;
 import java.util.List;
@@ -24,16 +28,19 @@ public class ProcessManagerService {
 		return responseBody;
 	}
 
-	public ServiceResponse<CodCandidatoHolder> iniciarProcesso(String name) {
+	public CodCandidatoHolder iniciarProcesso(String name) throws
+		ApiCandidatoDuplicado, ApiNomeInvalido {
 		try {
 			int codCandidato = this.processManager.iniciarProcesso(name);
 
 			CodCandidatoHolder codCandidatoHolder =
 				new CodCandidatoHolder(codCandidato);
 
-			return new ServiceResponse<>(codCandidatoHolder, HttpStatus.CREATED);
-		} catch (Exception e) {
-			return new ServiceResponse<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+			return codCandidatoHolder;
+		} catch (CandidatoNaoEncontrado e) {
+			throw new ApiCandidatoDuplicado();
+		} catch (NomeInvalido e) {
+			throw new ApiNomeInvalido();
 		}
 	}
 
