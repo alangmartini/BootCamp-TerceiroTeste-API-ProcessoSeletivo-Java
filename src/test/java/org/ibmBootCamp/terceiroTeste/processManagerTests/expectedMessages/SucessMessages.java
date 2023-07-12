@@ -1,10 +1,9 @@
 package org.ibmBootCamp.terceiroTeste.processManagerTests.expectedMessages;
 
 public class SucessMessages {
-	static final String START_PROCESS = "{\n" +
-		"  \"data\": {\n" +
-		"    \"codCandidato\": 1\n" +
-		"  },\n" +
-		"  \"message\": \"\"\n" +
-		"}";
+	public static final String START_PROCESS = "{\"data\":{\"codCandidato\":1},\"message\":\"\"}";
+	public static final String START_PROCESS_2 = "{\"data\":{\"codCandidato" +
+		"\":2},\"message\":\"\"}";
+	public static final String START_PROCESS_3 = "{\"data\":{\"codCandidato" +
+		"\":3},\"message\":\"\"}";
 }

@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 @SpringBootTest
@@ -46,5 +47,10 @@ abstract  public class BaseControllerTest {
 			post("/api/v1/hiring/approve")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(requestBody));
+	}
+
+	public void resetProcess() throws Exception {
+		mockMvc.perform(
+			delete("/api/v1/hiring/reset"));
 	}
 }
