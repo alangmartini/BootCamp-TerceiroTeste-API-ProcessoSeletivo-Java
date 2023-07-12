@@ -27,9 +27,7 @@ class StartRouteTests extends BaseControllerTest {
 
 	@Test
 	void testSuccesful() throws Exception {
-		Pessoa pessoa = new Pessoa("Fulano de tal");
-
-		String requestBody = this.objectMapper.writeValueAsString(pessoa);
+		String requestBody = this.createPessoaRequestBody();
 
 		mockMvc.perform(
 				post("/api/v1/hiring/start")

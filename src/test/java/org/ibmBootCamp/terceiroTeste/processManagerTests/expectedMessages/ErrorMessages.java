@@ -5,6 +5,9 @@ public class ErrorMessages {
 		"\"message\":\"Nome invalido\"}";
 
 	public static final String CANDIDATO_DUPLICADO = "{\"data\":\"\",\"message\":\"Candidato ja participa do processo.\"}";
+
+	public static final String CANDIDATO_NAO_ENCONTRADO = "{\"data\":\"\"," +
+		"\"message\":\"Candidato nao encontrado\"}";
 }
 
 

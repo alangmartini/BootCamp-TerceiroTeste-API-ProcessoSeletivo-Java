@@ -8,6 +8,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -22,8 +23,7 @@ abstract  public class BaseControllerTest {
 	@Autowired
 	protected ObjectMapper objectMapper;
 
-	public void startProcess(Pessoa request) throws Exception {
-		String requestBody = objectMapper.writeValueAsString(request);
+	public void startProcess(String requestBody) throws Exception {
 
 		mockMvc.perform(
 			post("/api/v1/hiring/start")
@@ -31,18 +31,14 @@ abstract  public class BaseControllerTest {
 				.content(requestBody));
 	}
 
-	public void scheduleInterview(CodCandidatoHolder request) throws Exception {
-		String requestBody = objectMapper.writeValueAsString(request);
-
+	public void scheduleInterview(String requestBody) throws Exception {
 		mockMvc.perform(
-			post("/api/v1/hiring/start")
+			post("/api/v1/hiring/schedule")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(requestBody));
 	}
 
-	public void approveCandidato(CodCandidatoHolder  request) throws Exception {
-		String requestBody = objectMapper.writeValueAsString(request);
-
+	public void approveCandidato(String requestBody) throws Exception {
 		mockMvc.perform(
 			post("/api/v1/hiring/approve")
 				.contentType(MediaType.APPLICATION_JSON)
@@ -63,23 +59,23 @@ abstract  public class BaseControllerTest {
 	}
 
 	public String createPessoaRequestBody(String nome) throws Exception {
-		Pessoa pessoa = new Pessoa();
+		Pessoa pessoa = new Pessoa(nome);
 
 		String requestBody = this.objectMapper.writeValueAsString(pessoa);
 
 		return requestBody;
 	}
 
-	public String createCodCandidatoHolderRequestBody(Integer codCandidato) throws Exception {
-		CodCandidatoHolder codCandidatoHolder = new CodCandidatoHolder(codCandidato);
+	public String createCodCandidatoHolderRequestBody() throws Exception {
+		CodCandidatoHolder codCandidatoHolder = new CodCandidatoHolder(1);
 
 		String requestBody = this.objectMapper.writeValueAsString(codCandidatoHolder);
 
 		return requestBody;
 	}
 
-	public String createCodCandidatoHolderRequestBody() throws Exception {
-		CodCandidatoHolder codCandidatoHolder = new CodCandidatoHolder();
+	public String createCodCandidatoHolderRequestBody(Integer codCandidato) throws Exception {
+		CodCandidatoHolder codCandidatoHolder = new CodCandidatoHolder(codCandidato);
 
 		String requestBody = this.objectMapper.writeValueAsString(codCandidatoHolder);
 
